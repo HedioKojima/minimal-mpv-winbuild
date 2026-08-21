@@ -186,7 +186,7 @@ jobs:
     steps:
       - name: Run mpv_clang.yml
         run: |
-          curl -H "Authorization: Bearer $GH_TOKEN" $CURL_RETRIES --fail-with-body -X POST -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/sohnyj/minimal-mpv-winbuild/actions/workflows/mpv_clang.yml/dispatches -d @- <<EOF
+          curl -H "Authorization: Bearer $GH_TOKEN" $CURL_RETRIES --fail-with-body -X POST -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/$GITHUB_REPOSITORY/actions/workflows/mpv_clang.yml/dispatches -d @- <<EOF
           {
             "ref": "master",
             "inputs": {

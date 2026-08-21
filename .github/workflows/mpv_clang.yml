@@ -250,7 +250,7 @@ jobs:
           **Workflow**: [$GITHUB_RUN_ID]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)
           END
           )
-          id=$(curl -H "Authorization: Bearer $GH_TOKEN" $CURL_RETRIES --fail-with-body -s -X POST -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/sohnyj/minimal-mpv-winbuild/releases -d @- <<END | jq -r '.id'
+          id=$(curl -H "Authorization: Bearer $GH_TOKEN" $CURL_RETRIES --fail-with-body -s -X POST -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/$GITHUB_REPOSITORY/releases -d @- <<END | jq -r '.id'
           {
             "tag_name": "$tag",
             "name": "$name",
@@ -258,7 +258,7 @@ jobs:
           }
           END
           )
-          for file in release/*.7z; do curl -H "Authorization: Bearer $GH_TOKEN" $CURL_RETRIES --fail-with-body -X POST -H "Accept: application/vnd.github.v3+json" -H "Content-Type: $(file -b --mime-type $file)" https://uploads.github.com/repos/sohnyj/minimal-mpv-winbuild/releases/$id/assets?name=$(basename $file) --data-binary @$file; done
+          for file in release/*.7z; do curl -H "Authorization: Bearer $GH_TOKEN" $CURL_RETRIES --fail-with-body -X POST -H "Accept: application/vnd.github.v3+json" -H "Content-Type: $(file -b --mime-type $file)" https://uploads.github.com/repos/$GITHUB_REPOSITORY/releases/$id/assets?name=$(basename $file) --data-binary @$file; done
 
       - name: Pruning tags
         continue-on-error: true
@@ -268,14 +268,14 @@ jobs:
           tag_list=($(git tag | sort -rV))
           old=${tag_list[@]:30}
           for tag in ${old[@]}; do
-            id=$(curl -H "Authorization: Bearer $GH_TOKEN" $CURL_RETRIES -s -X GET -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/sohnyj/minimal-mpv-winbuild/releases/tags/$tag | jq -r '.id')
-            curl -H "Authorization: Bearer $GH_TOKEN" $CURL_RETRIES -s -X DELETE -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/sohnyj/minimal-mpv-winbuild/releases/$id
+            id=$(curl -H "Authorization: Bearer $GH_TOKEN" $CURL_RETRIES -s -X GET -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/$GITHUB_REPOSITORY/releases/tags/$tag | jq -r '.id')
+            curl -H "Authorization: Bearer $GH_TOKEN" $CURL_RETRIES -s -X DELETE -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/$GITHUB_REPOSITORY/releases/$id
             git tag -d $tag
           done
-          git push --tags --prune https://sohnyj:$GH_TOKEN@github.com/sohnyj/minimal-mpv-winbuild
+          git push --tags --prune https://$GITHUB_REPOSITORY_OWNER:$GH_TOKEN@github.com/$GITHUB_REPOSITORY
 
       - name: Delete releases cache
         if: ${{ github.event.inputs.github_release == 'false' || steps.upload_packages_gh.outcome == 'success' }}
         run: |
-          curl -H "Authorization: Bearer $GH_TOKEN" $CURL_RETRIES -s -o /dev/null -X DELETE -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/sohnyj/minimal-mpv-winbuild/actions/caches?key=$RELEASE_V3_KEY
-          curl -H "Authorization: Bearer $GH_TOKEN" $CURL_RETRIES -s -o /dev/null -X DELETE -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/sohnyj/minimal-mpv-winbuild/actions/caches?key=$RELEASE_ZNVER3_KEY
+          curl -H "Authorization: Bearer $GH_TOKEN" $CURL_RETRIES -s -o /dev/null -X DELETE -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/$GITHUB_REPOSITORY/actions/caches?key=$RELEASE_V3_KEY
+          curl -H "Authorization: Bearer $GH_TOKEN" $CURL_RETRIES -s -o /dev/null -X DELETE -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/$GITHUB_REPOSITORY/actions/caches?key=$RELEASE_ZNVER3_KEY
