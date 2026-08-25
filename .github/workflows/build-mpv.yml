@@ -287,14 +287,13 @@ jobs:
         run: |
           # Keep latest 30 tags/releases
           tag_list=($(git tag | sort -rV))
-          [ ${#tag_list[@]} -gt 0 ] || exit 0
-          old=${tag_list[@]:30}
-          for tag in ${old[@]}; do
+          old=("${tag_list[@]:30}")
+          [ ${#old[@]} -gt 0 ] || exit 0
+          for tag in "${old[@]}"; do
             id=$(curl -H "Authorization: Bearer $GH_TOKEN" $CURL_RETRIES -s -X GET -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/$GITHUB_REPOSITORY/releases/tags/$tag | jq -r '.id')
             curl -H "Authorization: Bearer $GH_TOKEN" $CURL_RETRIES -s -X DELETE -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/$GITHUB_REPOSITORY/releases/$id
-            git tag -d $tag
           done
-          git push origin --tags --prune
+          git push origin --delete "${old[@]}"
 
       - name: Delete releases cache
         if: ${{ github.event.inputs.github_release == 'false' || steps.upload_packages_gh.outcome == 'success' }}
