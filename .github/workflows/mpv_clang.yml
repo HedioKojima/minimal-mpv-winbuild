@@ -1,4 +1,4 @@
-name: mpv clang
+name: Build mpv
 defaults:
   run:
     shell: bash
