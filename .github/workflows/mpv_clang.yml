@@ -69,17 +69,19 @@ jobs:
         with:
           path: |
             clang_root
-          key: clang_root-${{ steps.cache_version.outputs.value }}
+          key: clang_root-${{ github.run_id }}
           restore-keys: |
             clang_root-
+          fail-on-cache-miss: true
 
       - name: Deriving toolchain
         id: toolchain_id
         env:
           MATCHED_KEY: ${{ steps.clang_root_cache.outputs.cache-matched-key }}
         run: |
-          test -n "$MATCHED_KEY" || exit 1
-          echo "value=${MATCHED_KEY#clang_root-}" >> $GITHUB_OUTPUT
+          toolchain_id="${MATCHED_KEY#clang_root-}"
+          echo "value=$toolchain_id" >> $GITHUB_OUTPUT
+          echo "SYSROOT_KEY=sysroot-${{ matrix.x86_64_level }}-$toolchain_id-${{ github.run_id }}" >> $GITHUB_ENV
 
       - name: Loading repository cache
         uses: actions/cache/restore@main
@@ -87,14 +89,23 @@ jobs:
           path: src_packages
           key: repository
 
-      - name: Loading ${{ matrix.x86_64_level }} sysroot cache
+      - name: Loading v3 toolchain sysroot
+        id: toolchain_sysroot
         uses: actions/cache/restore@main
         with:
           path: |
             ${{ env.BUILD_DIR }}
-          key: sysroot-${{ matrix.x86_64_level }}-${{ steps.toolchain_id.outputs.value }}
+          key: clang-${{ env.SYSROOT_LEVEL }}_toolchain-${{ steps.toolchain_id.outputs.value }}
+
+      - name: Loading ${{ matrix.x86_64_level }} sysroot cache
+        id: sysroot_cache
+        uses: actions/cache/restore@main
+        with:
+          path: |
+            ${{ env.BUILD_DIR }}
+          key: ${{ env.SYSROOT_KEY }}
           restore-keys: |
-            clang-${{ env.SYSROOT_LEVEL }}_toolchain-${{ steps.toolchain_id.outputs.value }}
+            sysroot-${{ matrix.x86_64_level }}-${{ steps.toolchain_id.outputs.value }}
 
       - name: Configuring CMake & Downloading source
         run: |
@@ -161,19 +172,13 @@ jobs:
         run: |
           ninja -C $BUILD_DIR cargo-clean
 
-      - name: Deleting stale incremental caches
-        if: ${{ always() && steps.build_mpv.conclusion != 'skipped' }}
+      - name: Deleting stale repository cache
+        if: ${{ always() && steps.build_mpv.conclusion != 'skipped' && matrix.x86_64_level == env.SYSROOT_LEVEL }}
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
-          SYSROOT_PREFIX: sysroot-${{ matrix.x86_64_level }}-
         run: |
-          if [ "${{ matrix.x86_64_level }}" = "${{ env.SYSROOT_LEVEL }}" ]; then
-            gh cache delete "repository" --repo "$REPO" || true
-          fi
-          for key in $(gh cache list --repo "$REPO" --key "$SYSROOT_PREFIX" --json key --limit 100 --jq '.[].key'); do
-            gh cache delete "$key" --repo "$REPO" || true
-          done
+          gh cache delete "repository" --repo "$REPO" || true
 
       - name: Saving repository cache
         uses: actions/cache/save@main
@@ -184,11 +189,24 @@ jobs:
 
       - name: Saving ${{ matrix.x86_64_level }} sysroot cache
         uses: actions/cache/save@main
-        if: ${{ always() && steps.build_mpv.conclusion != 'skipped' }}
+        if: ${{ always() && steps.build_mpv.conclusion != 'skipped' && (steps.toolchain_sysroot.outputs.cache-matched-key != '' || steps.sysroot_cache.outputs.cache-matched-key != '') }}
         with:
           path: |
             ${{ env.BUILD_DIR }}
-          key: sysroot-${{ matrix.x86_64_level }}-${{ steps.toolchain_id.outputs.value }}
+          key: ${{ env.SYSROOT_KEY }}
+
+      - name: Deleting superseded ${{ matrix.x86_64_level }} sysroot caches
+        if: ${{ always() && steps.build_mpv.conclusion != 'skipped' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SYSROOT_PREFIX: sysroot-${{ matrix.x86_64_level }}-
+        run: |
+          gh cache list --repo "$REPO" --key "$SYSROOT_KEY" --json key --jq '.[].key' | grep -qx "$SYSROOT_KEY" || exit 0
+          for key in $(gh cache list --repo "$REPO" --key "$SYSROOT_PREFIX" --json key --limit 100 --jq '.[].key'); do
+            [ "$key" = "$SYSROOT_KEY" ] && continue
+            gh cache delete "$key" --repo "$REPO" || true
+          done
 
       - name: Saving release cache
         uses: actions/cache/save@main

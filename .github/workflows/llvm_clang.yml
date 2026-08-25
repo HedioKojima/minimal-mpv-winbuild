@@ -170,6 +170,7 @@ jobs:
           KEEP: ${{ steps.cache_version.outputs.value }}-${{ github.run_id }}
         run: |
           for prefix in clang_root- clang-x86_64_toolchain- clang-v3_toolchain-; do
+            gh cache list --repo "$REPO" --key "${prefix}${KEEP}" --json key --jq '.[].key' | grep -qx "${prefix}${KEEP}" || continue
             for key in $(gh cache list --repo "$REPO" --key "$prefix" --json key --limit 100 --jq '.[].key'); do
               [ "$key" = "${prefix}${KEEP}" ] && continue
               gh cache delete "$key" --repo "$REPO" || true
