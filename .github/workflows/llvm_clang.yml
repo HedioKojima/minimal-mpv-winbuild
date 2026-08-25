@@ -128,6 +128,7 @@ jobs:
         with:
           name: llvm-x86_64-logs
           path: llvm-x86_64-logs
+          if-no-files-found: ignore
           retention-days: 1
 
       - name: Uploading x86_64-v3 logs
@@ -136,14 +137,8 @@ jobs:
         with:
           name: llvm-x86_64-v3-logs
           path: llvm-x86_64-v3-logs
+          if-no-files-found: ignore
           retention-days: 1
-
-      - name: Uploading toolchain
-        uses: actions/upload-artifact@master
-        if: always()
-        with:
-          name: toolchain
-          path: clang_root
 
       - name: Saving clang root
         uses: actions/cache/save@main

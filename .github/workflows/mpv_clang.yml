@@ -153,6 +153,7 @@ jobs:
         with:
           name: mpv-x86_64-${{ matrix.x86_64_level }}-logs
           path: mpv-x86_64-${{ matrix.x86_64_level }}-logs
+          if-no-files-found: ignore
           retention-days: 1
 
       - name: Uploading x86_64-${{ matrix.x86_64_level }} build
@@ -160,6 +161,8 @@ jobs:
         with:
           name: mpv-x86_64-${{ matrix.x86_64_level }}
           path: release_${{ matrix.x86_64_level }}/mpv-${{ env.BIT }}*
+          if-no-files-found: error
+          compression-level: 0
 
       - name: Cleaning build directory
         if: ${{ always() && steps.build_mpv.conclusion != 'skipped' }}
