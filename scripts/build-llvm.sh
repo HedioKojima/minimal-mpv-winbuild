@@ -7,6 +7,7 @@
 #   buildroot       where clang_root/src_packages/build dirs live
 #                   (default: the repository root)
 set -euo pipefail
+shopt -s nullglob
 
 usage() { sed -n '2,${/^#/!q;s/^# \?//p}' "$0"; exit "${1:-0}"; }
 
@@ -96,7 +97,9 @@ cmake "${common[@]}" -DLLVM_ENABLE_PGO=GEN -DCLANG_PACKAGES_LTO=ON \
 ninja -C "$host_dir" shaderc
 
 echo ">> [5/6] Merge profraw -> $profdata"
-llvm-profdata merge "$clang_root"/profiles/*.profraw -o "$profdata"
+profraw=("$clang_root"/profiles/*.profraw)
+[[ ${#profraw[@]} -gt 0 ]] || { echo "no profraw under $clang_root/profiles -- PGO training produced no profile" >&2; exit 1; }
+llvm-profdata merge "${profraw[@]}" -o "$profdata"
 rm -rf "$clang_root"/profiles/* || true
 
 echo ">> [6/6] Rebuild LLVM with PGO"

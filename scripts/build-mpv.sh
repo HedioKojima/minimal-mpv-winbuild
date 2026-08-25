@@ -51,6 +51,11 @@ if [[ ! -x "$clang_root/bin/clang" ]]; then
     exit 1
 fi
 
+if [[ ! -d "$mingw_prefix/include" || ! -d "$mingw_prefix/lib" ]]; then
+    echo "sysroot not found at $mingw_prefix -- run build-llvm.sh first" >&2
+    exit 1
+fi
+
 clang_flags=""
 if [[ -n "$mtune" ]]; then clang_flags="-mtune=$mtune"; fi
 
