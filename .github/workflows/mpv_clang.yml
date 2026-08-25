@@ -102,6 +102,7 @@ jobs:
           ninja -C $BUILD_DIR download || true
 
       - name: Building mpv
+        id: build_mpv
         run: |
           ninja -C $BUILD_DIR update
           ninja -C $BUILD_DIR mpv
@@ -150,18 +151,18 @@ jobs:
           path: release_${{ matrix.x86_64_level }}/mpv-${{ env.BIT }}*
 
       - name: Cleaning build directory
-        if: always()
+        if: ${{ always() && steps.build_mpv.conclusion != 'skipped' }}
         run: |
           rm -rf $BUILD_DIR/mpv*
           ninja -C $BUILD_DIR mpv-fullclean
 
       - name: Cleaning rust toolchain directory
-        if: always()
+        if: ${{ always() && steps.build_mpv.conclusion != 'skipped' }}
         run: |
           ninja -C $BUILD_DIR cargo-clean
 
       - name: Deleting stale incremental caches
-        if: always()
+        if: ${{ always() && steps.build_mpv.conclusion != 'skipped' }}
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
@@ -176,14 +177,14 @@ jobs:
 
       - name: Saving repository cache
         uses: actions/cache/save@main
-        if: ${{ always() && matrix.x86_64_level == env.SYSROOT_LEVEL }}
+        if: ${{ always() && steps.build_mpv.conclusion != 'skipped' && matrix.x86_64_level == env.SYSROOT_LEVEL }}
         with:
           path: src_packages
           key: repository
 
       - name: Saving ${{ matrix.x86_64_level }} sysroot cache
         uses: actions/cache/save@main
-        if: always()
+        if: ${{ always() && steps.build_mpv.conclusion != 'skipped' }}
         with:
           path: |
             ${{ env.BUILD_DIR }}
