@@ -154,7 +154,8 @@ jobs:
           LOGS_DIR: mpv-x86_64-${{ matrix.x86_64_level }}-logs
         run: |
           mkdir -p "$LOGS_DIR"
-          cp -fr $(find $BUILD_DIR -type f -iname "*-*.log" -or -wholename "*/ffbuild/config.log") "$LOGS_DIR" || true
+          find "$BUILD_DIR" -type f \( -iname "*-*.log" -o -wholename "*/ffbuild/config.log" \) \
+            -exec cp -f -t "$LOGS_DIR" {} + || true
 
       - name: Uploading logs
         uses: actions/upload-artifact@master

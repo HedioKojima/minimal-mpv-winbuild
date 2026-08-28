@@ -141,8 +141,8 @@ jobs:
         if: always()
         run: |
           mkdir -p llvm-x86_64-logs llvm-x86_64-v3-logs
-          cp -fr $(find build_x86_64 -type f -iname "*-*.log") llvm-x86_64-logs || true
-          cp -fr $(find build_x86_64-v3 -type f -iname "*-*.log") llvm-x86_64-v3-logs || true
+          find build_x86_64 -type f -iname "*-*.log" -exec cp -f -t llvm-x86_64-logs {} + || true
+          find build_x86_64-v3 -type f -iname "*-*.log" -exec cp -f -t llvm-x86_64-v3-logs {} + || true
 
       - name: Cleanup
         run: |
