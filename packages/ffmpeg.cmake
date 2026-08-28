@@ -48,7 +48,7 @@ ExternalProject_Add(ffmpeg
         --enable-libzimg
         --enable-lzma
         --enable-nvdec
-        --enable-nvenc
+        --disable-nvenc
         --enable-runtime-cpudetect
         --enable-schannel
         --enable-version3
@@ -73,6 +73,18 @@ ExternalProject_Add(ffmpeg
         --disable-protocol=mmst
         --disable-protocol=prompeg
         --disable-protocol=udplite
+        --disable-programs
+        --disable-avdevice
+        --disable-muxers
+        --enable-muxer=image2
+        --disable-demuxer=matroska
+        --disable-devices
+        --disable-bsfs
+        --disable-encoders
+        --enable-encoder=libjxl
+        --enable-encoder=png
+        --enable-encoder=mjpeg
+        --disable-decoder=aac_fixed,ac3_fixed,mp1,mp2,mp3,mp3adu,mp3on4
         ${ffmpeg_lto}
         "--extra-libs='${ffmpeg_extra_libs}'" # -lc++ for C++ deps
     BUILD_COMMAND ${MAKE}
