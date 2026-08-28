@@ -40,7 +40,7 @@ if [[ ${#pkgs[@]} -eq 0 ]]; then
 fi
 
 filtered=()
-for pkg in ${pkgs[@]+"${pkgs[@]}"}; do
+for pkg in "${pkgs[@]}"; do
     [[ "$toolchain_pkgs" == *" $pkg "* ]] && continue
     filtered+=("$pkg")
 done

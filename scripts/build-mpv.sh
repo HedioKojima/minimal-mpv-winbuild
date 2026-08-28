@@ -8,6 +8,7 @@
 #   buildroot       where clang_root/src_packages/build dirs live
 #                   (default: the repository root)
 set -euo pipefail
+shopt -s nullglob
 
 usage() { sed -n '2,${/^#/!q;s/^# \?//p}' "$0"; exit "${1:-0}"; }
 
@@ -44,7 +45,7 @@ fi
 arch_dir="$buildroot/build_x86_64$x86_64_level"
 mingw_prefix="$arch_dir/x86_64$x86_64_level-w64-mingw32"
 clang_root="$buildroot/clang_root"
-release_dir="$gitdir/release"
+release_dir="$buildroot/release"
 
 if [[ ! -x "$clang_root/bin/clang" ]]; then
     echo "toolchain not found at $clang_root/bin/clang -- run build-llvm.sh first" >&2
@@ -85,7 +86,9 @@ ninja -C "$arch_dir" mpv
 echo ">> [5/6] Packaging mpv"
 mkdir -p "$release_dir"
 ninja -C "$arch_dir" mpv-packaging
-mv "$arch_dir"/mpv*.7z "$release_dir"/ 2>/dev/null || true
+archives=("$arch_dir"/mpv*.7z)
+[[ ${#archives[@]} -gt 0 ]] || { echo "mpv-packaging produced no archive in $arch_dir" >&2; exit 1; }
+mv "${archives[@]}" "$release_dir"/
 
 ffmpeg_hash=$(git -C "$buildroot/src_packages/ffmpeg" rev-parse --short HEAD)
 7z a -m0=lzma2 -mx=9 -ms=on \
