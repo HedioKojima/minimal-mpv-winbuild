@@ -3,7 +3,7 @@ ExternalProject_Add(llvm
     GIT_REPOSITORY https://github.com/llvm/llvm-project.git
     SOURCE_DIR ${SOURCE_LOCATION}
     GIT_CLONE_FLAGS "--sparse --filter=tree:0"
-    GIT_CLONE_POST_COMMAND "sparse-checkout set --no-cone /* !*/test !/lldb !/mlir !/clang-tools-extra !/mlir !/polly !/bolt !/flang"
+    GIT_CLONE_POST_COMMAND "sparse-checkout set --no-cone /* !*/test !/.ci !/.github !/bolt !/clang-tools-extra !/cross-project-tests !/flang !/flang-rt !/libclc !/libsycl !/lldb !/llvm-libgcc !/mlir !/offload !/openmp !/orc-rt !/polly !/utils"
     UPDATE_COMMAND ""
     GIT_REMOTE_NAME origin
     GIT_TAG release/23.x
