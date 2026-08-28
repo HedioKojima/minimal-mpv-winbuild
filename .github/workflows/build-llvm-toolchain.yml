@@ -12,6 +12,14 @@ on:
         default: true
         type: boolean
 
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
 jobs:
   build_llvm:
     name: Building LLVM and Clang
@@ -46,9 +54,8 @@ jobs:
         uses: actions/cache/restore@main
         with:
           path: clang_root
-          key: clang_root-x86_64-${{ steps.cache_version.outputs.value }}-${{ github.run_id }}
+          key: clang_root-x86_64-
           restore-keys: |
-            clang_root-x86_64-${{ steps.cache_version.outputs.value }}
             clang_root-x86_64-
 
       - name: Loading x86_64 toolchain
@@ -57,9 +64,8 @@ jobs:
         uses: actions/cache/restore@main
         with:
           path: build_x86_64
-          key: clang-x86_64_toolchain-${{ steps.cache_version.outputs.value }}-${{ github.run_id }}
+          key: clang-x86_64_toolchain-
           restore-keys: |
-            clang-x86_64_toolchain-${{ steps.cache_version.outputs.value }}
             clang-x86_64_toolchain-
 
       - name: Loading x86_64-v3 toolchain
@@ -68,10 +74,25 @@ jobs:
         uses: actions/cache/restore@main
         with:
           path: build_x86_64-v3
-          key: clang-x86_64-v3_toolchain-${{ steps.cache_version.outputs.value }}-${{ github.run_id }}
+          key: clang-x86_64-v3_toolchain-
           restore-keys: |
-            clang-x86_64-v3_toolchain-${{ steps.cache_version.outputs.value }}
             clang-x86_64-v3_toolchain-
+
+      - name: Deriving cache suffix
+        id: cache_suffix
+        env:
+          CLANG_ROOT_KEY: ${{ steps.clang_root_cache.outputs.cache-matched-key }}
+          X86_64_KEY: ${{ steps.x86_64_cache.outputs.cache-matched-key }}
+          V3_KEY: ${{ steps.v3_cache.outputs.cache-matched-key }}
+          FRESH: ${{ steps.cache_version.outputs.value }}-${{ github.run_id }}
+        run: |
+          if [ -n "$CLANG_ROOT_KEY" ] && [ -n "$X86_64_KEY" ] && [ -n "$V3_KEY" ]; then
+            echo "value=${CLANG_ROOT_KEY#clang_root-x86_64-}" >> $GITHUB_OUTPUT
+            echo "rebuilt=false" >> $GITHUB_OUTPUT
+          else
+            echo "value=$FRESH" >> $GITHUB_OUTPUT
+            echo "rebuilt=true" >> $GITHUB_OUTPUT
+          fi
 
       - name: Building LLVM with IR Profile Instrumentation
         if: ${{ steps.clang_root_cache.outputs.cache-matched-key == '' }}
@@ -102,8 +123,11 @@ jobs:
       - name: Merging profraw to profdata
         if: ${{ steps.clang_root_cache.outputs.cache-matched-key == '' }}
         run: |
-          llvm-profdata merge $PWD/clang_root/profiles/*.profraw -o llvm.profdata
-          rm -rf $PWD/clang_root/profiles/* || true
+          shopt -s nullglob
+          profraw=("$PWD"/clang_root/profiles/*.profraw)
+          [ ${#profraw[@]} -gt 0 ] || { echo "no profraw under clang_root/profiles -- PGO training produced no profile" >&2; exit 1; }
+          llvm-profdata merge "${profraw[@]}" -o llvm.profdata
+          rm -rf "$PWD"/clang_root/profiles/* || true
 
       - name: Building LLVM with PGO
         if: ${{ steps.clang_root_cache.outputs.cache-matched-key == '' }}
@@ -142,27 +166,31 @@ jobs:
 
       - name: Saving clang root
         uses: actions/cache/save@main
+        if: ${{ steps.cache_suffix.outputs.rebuilt == 'true' }}
         with:
           path: clang_root
-          key: clang_root-x86_64-${{ steps.cache_version.outputs.value }}-${{ github.run_id }}
+          key: clang_root-x86_64-${{ steps.cache_suffix.outputs.value }}
 
       - name: Saving x86_64 toolchain
         uses: actions/cache/save@main
+        if: ${{ steps.cache_suffix.outputs.rebuilt == 'true' }}
         with:
           path: build_x86_64
-          key: clang-x86_64_toolchain-${{ steps.cache_version.outputs.value }}-${{ github.run_id }}
+          key: clang-x86_64_toolchain-${{ steps.cache_suffix.outputs.value }}
 
       - name: Saving x86_64-v3 toolchain
         uses: actions/cache/save@main
+        if: ${{ steps.cache_suffix.outputs.rebuilt == 'true' }}
         with:
           path: build_x86_64-v3
-          key: clang-x86_64-v3_toolchain-${{ steps.cache_version.outputs.value }}-${{ github.run_id }}
+          key: clang-x86_64-v3_toolchain-${{ steps.cache_suffix.outputs.value }}
 
       - name: Deleting superseded toolchain caches
+        if: ${{ steps.cache_suffix.outputs.rebuilt == 'true' }}
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
-          KEEP: ${{ steps.cache_version.outputs.value }}-${{ github.run_id }}
+          KEEP: ${{ steps.cache_suffix.outputs.value }}
         run: |
           for prefix in clang_root-x86_64- clang-x86_64_toolchain- clang-x86_64-v3_toolchain-; do
             gh cache list --repo "$REPO" --key "${prefix}${KEEP}" --json key --jq '.[].key' | grep -qx "${prefix}${KEEP}" || continue

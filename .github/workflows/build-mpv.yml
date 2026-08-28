@@ -12,6 +12,14 @@ on:
         default: true
         type: boolean
 
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
 jobs:
   build_mpv:
     name: Building mpv (${{ matrix.llvm_arch }})
@@ -69,7 +77,7 @@ jobs:
         with:
           path: |
             clang_root
-          key: clang_root-${{ env.BIT }}-${{ github.run_id }}
+          key: clang_root-${{ env.BIT }}-
           restore-keys: |
             clang_root-${{ env.BIT }}-
           fail-on-cache-miss: true
@@ -96,6 +104,7 @@ jobs:
           path: |
             ${{ env.BUILD_DIR }}
           key: clang-${{ env.BIT }}-${{ env.SYSROOT_LEVEL }}_toolchain-${{ steps.toolchain_id.outputs.value }}
+          fail-on-cache-miss: true
 
       - name: Loading ${{ matrix.x86_64_level }} packages cache
         id: packages_cache
