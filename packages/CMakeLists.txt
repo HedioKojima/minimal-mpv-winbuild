@@ -2,11 +2,9 @@ set_property(DIRECTORY PROPERTY EP_STEP_TARGETS download)
 include(${PROJECT_SOURCE_DIR}/cmake/packages_check.cmake)
 list(APPEND ep
     # depth 0
-    amf-headers
     brotli
     bzip2
     c-ares
-    dav1d
     fast_float
     fribidi
     glad
@@ -19,9 +17,7 @@ list(APPEND ep
     libsoxr
     libudfread
     libunibreak
-    libvpl
     nghttp2
-    nghttp3
     nvcodec-headers
     spirv-cross
     spirv-headers
@@ -39,14 +35,12 @@ list(APPEND ep
     libxml2
     libzimg
     luajit
-    openssl
     shaderc
     vulkan
     # depth 2
     freetype2
     libjxl
     libplacebo
-    ngtcp2
     # depth 3
     curl
     harfbuzz

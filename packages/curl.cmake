@@ -4,9 +4,6 @@ ExternalProject_Add(curl
         c-ares
         libpsl
         nghttp2
-        nghttp3
-        ngtcp2
-        openssl
         zlib
         zstd
     GIT_REPOSITORY https://github.com/curl/curl.git
@@ -56,10 +53,10 @@ ExternalProject_Add(curl
         -DCURL_USE_LIBSSH2=OFF
         -DCURL_USE_LIBUV=OFF
         -DCURL_USE_MBEDTLS=OFF
-        -DCURL_USE_OPENSSL=ON
+        -DCURL_USE_OPENSSL=OFF
         -DCURL_USE_PKGCONFIG=ON
         -DCURL_USE_RUSTLS=OFF
-        -DCURL_USE_SCHANNEL=OFF
+        -DCURL_USE_SCHANNEL=ON
         -DCURL_USE_WOLFSSL=OFF
         -DCURL_ZLIB=ON
         -DCURL_ZSTD=ON
@@ -68,16 +65,16 @@ ExternalProject_Add(curl
         -DENABLE_THREADED_RESOLVER=ON
         -DENABLE_UNICODE=ON
         -DPICKY_COMPILER=OFF
-        -DUSE_ECH=ON
-        -DUSE_HTTPSRR=ON
+        -DUSE_ECH=OFF
+        -DUSE_HTTPSRR=OFF
         -DUSE_LIBIDN2=OFF
         -DUSE_NGHTTP2=ON
-        -DUSE_NGHTTP3=ON
-        -DUSE_NGTCP2=ON
-        -DUSE_PROXY_HTTP3=ON
-        -DUSE_SSLS_EXPORT=ON
+        -DUSE_NGHTTP3=OFF
+        -DUSE_NGTCP2=OFF
+        -DUSE_PROXY_HTTP3=OFF
+        -DUSE_SSLS_EXPORT=OFF
         -DUSE_WIN32_IDN=ON
-        "-DCMAKE_C_FLAGS='-DNGHTTP3_STATICLIB -DNGHTTP2_STATICLIB -DNGTCP2_STATICLIB'"
+        "-DCMAKE_C_FLAGS='-DNGHTTP2_STATICLIB'"
     BUILD_COMMAND ${EXEC} ninja -C <BINARY_DIR>
     INSTALL_COMMAND ${EXEC} ninja -C <BINARY_DIR> install
     LOG_DOWNLOAD 1 LOG_UPDATE 1 LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1

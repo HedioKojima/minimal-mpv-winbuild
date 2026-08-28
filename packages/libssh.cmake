@@ -1,7 +1,6 @@
 ExternalProject_Add(libssh
     DEPENDS
         zlib
-        openssl
     GIT_REPOSITORY https://gitlab.com/libssh/libssh-mirror.git
     SOURCE_DIR ${SOURCE_LOCATION}
     GIT_CLONE_FLAGS "--filter=tree:0"

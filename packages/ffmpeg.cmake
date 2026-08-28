@@ -1,8 +1,6 @@
 ExternalProject_Add(ffmpeg
     DEPENDS
-        amf-headers
         bzip2
-        dav1d
         freetype2
         fribidi
         harfbuzz
@@ -13,11 +11,9 @@ ExternalProject_Add(ffmpeg
         libjxl
         libplacebo
         libsoxr
-        libvpl
         libxml2
         libzimg
         nvcodec-headers
-        openssl
         spirv-headers
         xz
         zlib
@@ -32,7 +28,6 @@ ExternalProject_Add(ffmpeg
         --arch=${TARGET_CPU}
         --target-os=mingw32
         --pkg-config-flags=--static
-        --enable-amf
         --enable-bzlib
         --enable-cross-compile
         --enable-cuda-llvm
@@ -43,21 +38,19 @@ ExternalProject_Add(ffmpeg
         --enable-lcms2
         --enable-libass
         --enable-libbluray
-        --enable-libdav1d
         --enable-libfreetype
         --enable-libfribidi
         --enable-libharfbuzz
         --enable-libjxl
         --enable-libplacebo
         --enable-libsoxr
-        --enable-libvpl
         --enable-libxml2
         --enable-libzimg
         --enable-lzma
         --enable-nvdec
         --enable-nvenc
-        --enable-openssl
         --enable-runtime-cpudetect
+        --enable-schannel
         --enable-version3
         --enable-vulkan
         --enable-zlib
