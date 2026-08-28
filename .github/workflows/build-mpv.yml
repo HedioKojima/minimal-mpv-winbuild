@@ -69,9 +69,9 @@ jobs:
         with:
           path: |
             clang_root
-          key: clang_root-${{ github.run_id }}
+          key: clang_root-${{ env.BIT }}-${{ github.run_id }}
           restore-keys: |
-            clang_root-
+            clang_root-${{ env.BIT }}-
           fail-on-cache-miss: true
 
       - name: Deriving toolchain
@@ -79,9 +79,9 @@ jobs:
         env:
           MATCHED_KEY: ${{ steps.clang_root_cache.outputs.cache-matched-key }}
         run: |
-          toolchain_id="${MATCHED_KEY#clang_root-}"
+          toolchain_id="${MATCHED_KEY#clang_root-$BIT-}"
           echo "value=$toolchain_id" >> $GITHUB_OUTPUT
-          echo "SYSROOT_KEY=sysroot-${{ matrix.x86_64_level }}-$toolchain_id-${{ github.run_id }}" >> $GITHUB_ENV
+          echo "PACKAGES_KEY=packages-${{ env.BIT }}-${{ matrix.x86_64_level }}-$toolchain_id-${{ github.run_id }}" >> $GITHUB_ENV
 
       - name: Loading repository cache
         uses: actions/cache/restore@main
@@ -95,17 +95,17 @@ jobs:
         with:
           path: |
             ${{ env.BUILD_DIR }}
-          key: clang-${{ env.SYSROOT_LEVEL }}_toolchain-${{ steps.toolchain_id.outputs.value }}
+          key: clang-${{ env.BIT }}-${{ env.SYSROOT_LEVEL }}_toolchain-${{ steps.toolchain_id.outputs.value }}
 
-      - name: Loading ${{ matrix.x86_64_level }} sysroot cache
-        id: sysroot_cache
+      - name: Loading ${{ matrix.x86_64_level }} packages cache
+        id: packages_cache
         uses: actions/cache/restore@main
         with:
           path: |
             ${{ env.BUILD_DIR }}
-          key: ${{ env.SYSROOT_KEY }}
+          key: ${{ env.PACKAGES_KEY }}
           restore-keys: |
-            sysroot-${{ matrix.x86_64_level }}-${{ steps.toolchain_id.outputs.value }}
+            packages-${{ env.BIT }}-${{ matrix.x86_64_level }}-${{ steps.toolchain_id.outputs.value }}
 
       - name: Configuring CMake & Downloading source
         run: |
@@ -190,24 +190,24 @@ jobs:
           path: src_packages
           key: repository
 
-      - name: Saving ${{ matrix.x86_64_level }} sysroot cache
+      - name: Saving ${{ matrix.x86_64_level }} packages cache
         uses: actions/cache/save@main
-        if: ${{ always() && steps.build_mpv.conclusion != 'skipped' && (steps.toolchain_sysroot.outputs.cache-matched-key != '' || steps.sysroot_cache.outputs.cache-matched-key != '') }}
+        if: ${{ always() && steps.build_mpv.conclusion != 'skipped' && (steps.toolchain_sysroot.outputs.cache-matched-key != '' || steps.packages_cache.outputs.cache-matched-key != '') }}
         with:
           path: |
             ${{ env.BUILD_DIR }}
-          key: ${{ env.SYSROOT_KEY }}
+          key: ${{ env.PACKAGES_KEY }}
 
-      - name: Deleting superseded ${{ matrix.x86_64_level }} sysroot caches
+      - name: Deleting superseded ${{ matrix.x86_64_level }} packages caches
         if: ${{ always() && steps.build_mpv.conclusion != 'skipped' }}
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
-          SYSROOT_PREFIX: sysroot-${{ matrix.x86_64_level }}-
+          PACKAGES_PREFIX: packages-${{ env.BIT }}-${{ matrix.x86_64_level }}-
         run: |
-          gh cache list --repo "$REPO" --key "$SYSROOT_KEY" --json key --jq '.[].key' | grep -qx "$SYSROOT_KEY" || exit 0
-          for key in $(gh cache list --repo "$REPO" --key "$SYSROOT_PREFIX" --json key --limit 100 --jq '.[].key'); do
-            [ "$key" = "$SYSROOT_KEY" ] && continue
+          gh cache list --repo "$REPO" --key "$PACKAGES_KEY" --json key --jq '.[].key' | grep -qx "$PACKAGES_KEY" || exit 0
+          for key in $(gh cache list --repo "$REPO" --key "$PACKAGES_PREFIX" --json key --limit 100 --jq '.[].key'); do
+            [ "$key" = "$PACKAGES_KEY" ] && continue
             gh cache delete "$key" --repo "$REPO" || true
           done
 

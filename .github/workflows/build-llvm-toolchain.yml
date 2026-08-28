@@ -46,10 +46,10 @@ jobs:
         uses: actions/cache/restore@main
         with:
           path: clang_root
-          key: clang_root-${{ steps.cache_version.outputs.value }}-${{ github.run_id }}
+          key: clang_root-x86_64-${{ steps.cache_version.outputs.value }}-${{ github.run_id }}
           restore-keys: |
-            clang_root-${{ steps.cache_version.outputs.value }}
-            clang_root-
+            clang_root-x86_64-${{ steps.cache_version.outputs.value }}
+            clang_root-x86_64-
 
       - name: Loading x86_64 toolchain
         id: x86_64_cache
@@ -68,10 +68,10 @@ jobs:
         uses: actions/cache/restore@main
         with:
           path: build_x86_64-v3
-          key: clang-v3_toolchain-${{ steps.cache_version.outputs.value }}-${{ github.run_id }}
+          key: clang-x86_64-v3_toolchain-${{ steps.cache_version.outputs.value }}-${{ github.run_id }}
           restore-keys: |
-            clang-v3_toolchain-${{ steps.cache_version.outputs.value }}
-            clang-v3_toolchain-
+            clang-x86_64-v3_toolchain-${{ steps.cache_version.outputs.value }}
+            clang-x86_64-v3_toolchain-
 
       - name: Building LLVM with IR Profile Instrumentation
         if: ${{ steps.clang_root_cache.outputs.cache-matched-key == '' }}
@@ -144,7 +144,7 @@ jobs:
         uses: actions/cache/save@main
         with:
           path: clang_root
-          key: clang_root-${{ steps.cache_version.outputs.value }}-${{ github.run_id }}
+          key: clang_root-x86_64-${{ steps.cache_version.outputs.value }}-${{ github.run_id }}
 
       - name: Saving x86_64 toolchain
         uses: actions/cache/save@main
@@ -156,7 +156,7 @@ jobs:
         uses: actions/cache/save@main
         with:
           path: build_x86_64-v3
-          key: clang-v3_toolchain-${{ steps.cache_version.outputs.value }}-${{ github.run_id }}
+          key: clang-x86_64-v3_toolchain-${{ steps.cache_version.outputs.value }}-${{ github.run_id }}
 
       - name: Deleting superseded toolchain caches
         env:
@@ -164,7 +164,7 @@ jobs:
           REPO: ${{ github.repository }}
           KEEP: ${{ steps.cache_version.outputs.value }}-${{ github.run_id }}
         run: |
-          for prefix in clang_root- clang-x86_64_toolchain- clang-v3_toolchain-; do
+          for prefix in clang_root-x86_64- clang-x86_64_toolchain- clang-x86_64-v3_toolchain-; do
             gh cache list --repo "$REPO" --key "${prefix}${KEEP}" --json key --jq '.[].key' | grep -qx "${prefix}${KEEP}" || continue
             for key in $(gh cache list --repo "$REPO" --key "$prefix" --json key --limit 100 --jq '.[].key'); do
               [ "$key" = "${prefix}${KEEP}" ] && continue
