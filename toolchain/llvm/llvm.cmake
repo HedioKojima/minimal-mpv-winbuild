@@ -1,9 +1,67 @@
 set(clang_version "23")
+
+set(llvm_sparse_excludes
+    .ci
+    .github
+    bolt
+    clang-tools-extra
+    cross-project-tests
+    flang
+    flang-rt
+    libclc
+    libsycl
+    lldb
+    llvm-libgcc
+    mlir
+    offload
+    openmp
+    orc-rt
+    polly
+    utils
+)
+list(TRANSFORM llvm_sparse_excludes PREPEND "!/")
+list(JOIN llvm_sparse_excludes " " llvm_sparse_excludes)
+
+set(llvm_toolchain_tools
+    llvm-addr2line
+    llvm-ar
+    llvm-config
+    llvm-cov
+    llvm-cvtres
+    llvm-dlltool
+    llvm-driver
+    llvm-ml
+    llvm-nm
+    llvm-objcopy
+    llvm-objdump
+    llvm-profdata
+    llvm-ranlib
+    llvm-rc
+    llvm-readelf
+    llvm-readobj
+    llvm-size
+    llvm-strings
+    llvm-strip
+    llvm-symbolizer
+    llvm-windres
+)
+list(JOIN llvm_toolchain_tools "," llvm_toolchain_tools)
+
+set(llvm_linker_flags
+    -fuse-ld=lld
+    -static-libstdc++
+    -static-libgcc
+    "-Xlinker -s"
+    "-Xlinker --icf=all"
+    "-Xlinker --thinlto-cache-policy=cache_size_bytes=1g:prune_interval=1m"
+)
+list(JOIN llvm_linker_flags " " llvm_linker_flags)
+
 ExternalProject_Add(llvm
     GIT_REPOSITORY https://github.com/llvm/llvm-project.git
     SOURCE_DIR ${SOURCE_LOCATION}
     GIT_CLONE_FLAGS "--sparse --filter=tree:0"
-    GIT_CLONE_POST_COMMAND "sparse-checkout set --no-cone /* !*/test !/.ci !/.github !/bolt !/clang-tools-extra !/cross-project-tests !/flang !/flang-rt !/libclc !/libsycl !/lldb !/llvm-libgcc !/mlir !/offload !/openmp !/orc-rt !/polly !/utils"
+    GIT_CLONE_POST_COMMAND "sparse-checkout set --no-cone /* !*/test ${llvm_sparse_excludes}"
     UPDATE_COMMAND ""
     GIT_REMOTE_NAME origin
     GIT_TAG release/23.x
@@ -169,11 +227,11 @@ ExternalProject_Add(llvm
         -DLLVM_TOOL_VFABI_DEMANGLE_FUZZER_BUILD=OFF
         -DLLVM_TOOL_XCODE_TOOLCHAIN_BUILD=OFF
         -DLLVM_TOOL_YAML2OBJ_BUILD=OFF
-        -DLLVM_TOOLCHAIN_TOOLS='llvm-driver,llvm-ar,llvm-ranlib,llvm-objdump,llvm-rc,llvm-cvtres,llvm-nm,llvm-strings,llvm-readobj,llvm-dlltool,llvm-objcopy,llvm-strip,llvm-cov,llvm-profdata,llvm-addr2line,llvm-symbolizer,llvm-windres,llvm-ml,llvm-readelf,llvm-size,llvm-config'
+        -DLLVM_TOOLCHAIN_TOOLS='${llvm_toolchain_tools}'
         "-DLLVM_THINLTO_CACHE_PATH='${CMAKE_INSTALL_PREFIX}/llvm-thinlto'"
         "-DCMAKE_C_FLAGS='-g0 -ftls-model=local-exec ${llvm_lto} ${llvm_pgo}'"
         "-DCMAKE_CXX_FLAGS='-g0 -ftls-model=local-exec ${llvm_lto} ${llvm_pgo}'"
-        "-DCMAKE_EXE_LINKER_FLAGS='-fuse-ld=lld -static-libstdc++ -static-libgcc -Xlinker -s -Xlinker --icf=all -Xlinker --thinlto-cache-policy=cache_size_bytes=1g:prune_interval=1m'"
+        "-DCMAKE_EXE_LINKER_FLAGS='${llvm_linker_flags}'"
     BUILD_COMMAND ${EXEC} ninja -C <BINARY_DIR>
     INSTALL_COMMAND ${EXEC} ninja -C <BINARY_DIR> install
     LOG_DOWNLOAD 1 LOG_UPDATE 1 LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1
