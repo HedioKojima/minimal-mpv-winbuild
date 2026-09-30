@@ -9,7 +9,6 @@
 #   buildroot       location of the clang_root/src_packages/build dirs
 #                   (default: the repository root)
 set -euo pipefail
-shopt -s nullglob
 
 usage() { sed -n '2,${/^#/!q;s/^# \?//p}' "$0"; exit "${1:-0}"; }
 
