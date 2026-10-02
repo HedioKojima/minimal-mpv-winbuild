@@ -30,8 +30,6 @@ ExternalProject_Add(mpv
         --default-library=shared
         --prefer-static
         -Doptimization=3
-        -Db_lto=true
-        ${mpv_lto_mode}
         -Damf=enabled
         -Dcdda=disabled
         -Dcplugins=disabled
