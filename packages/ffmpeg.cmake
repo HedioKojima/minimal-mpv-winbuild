@@ -20,6 +20,7 @@ ExternalProject_Add(ffmpeg
         nvcodec-headers
         openssl
         spirv-headers
+        vulkan
         xz
         zlib
     GIT_REPOSITORY https://github.com/FFmpeg/FFmpeg.git
