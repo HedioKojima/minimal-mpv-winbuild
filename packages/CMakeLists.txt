@@ -13,6 +13,7 @@ list(APPEND ep
     glslang
     graphengine
     highway
+    lcms2
     libiconv
     libjpeg
     libpsl
@@ -33,7 +34,6 @@ list(APPEND ep
     zlib
     zstd
     # depth 1
-    lcms2
     libarchive
     libpng
     libxml2
