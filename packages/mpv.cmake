@@ -2,7 +2,6 @@ ExternalProject_Add(mpv
     DEPENDS
         curl
         ffmpeg
-        fribidi
         lcms2
         libarchive
         libass
