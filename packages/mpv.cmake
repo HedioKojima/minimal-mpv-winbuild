@@ -16,6 +16,7 @@ ExternalProject_Add(mpv
         subrandr
         uchardet
         vulkan
+        zlib
     GIT_REPOSITORY https://github.com/mpv-player/mpv.git
     SOURCE_DIR ${SOURCE_LOCATION}
     GIT_CLONE_FLAGS "--sparse --filter=tree:0"
