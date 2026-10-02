@@ -20,6 +20,7 @@ list(APPEND ep
     libudfread
     libunibreak
     libvpl
+    luajit
     nghttp2
     nghttp3
     nvcodec-headers
@@ -38,7 +39,6 @@ list(APPEND ep
     libpng
     libxml2
     libzimg
-    luajit
     openssl
     shaderc
     vulkan
