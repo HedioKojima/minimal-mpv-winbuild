@@ -1,10 +1,8 @@
-get_property(src_libjpeg TARGET libjpeg PROPERTY _EP_SOURCE_DIR)
 ExternalProject_Add(libjxl
     DEPENDS
         brotli
         highway
         lcms2
-        libjpeg
     GIT_REPOSITORY https://github.com/libjxl/libjxl.git
     SOURCE_DIR ${SOURCE_LOCATION}
     GIT_CLONE_FLAGS "--sparse --filter=tree:0"
@@ -13,10 +11,7 @@ ExternalProject_Add(libjxl
     GIT_TAG main
     GIT_SUBMODULES ""
     UPDATE_COMMAND ""
-    CONFIGURE_COMMAND ""
-    COMMAND bash -c "rm -rf <SOURCE_DIR>/third_party/libjpeg-turbo"
-    COMMAND bash -c "ln -s ${src_libjpeg} <SOURCE_DIR>/third_party/libjpeg-turbo"
-    COMMAND ${EXEC} CONF=1 cmake -H<SOURCE_DIR> -B<BINARY_DIR>
+    CONFIGURE_COMMAND ${EXEC} CONF=1 cmake -H<SOURCE_DIR> -B<BINARY_DIR>
         -G Ninja
         -DCMAKE_BUILD_TYPE=Release
         -DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}

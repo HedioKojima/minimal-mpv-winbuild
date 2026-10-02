@@ -35,6 +35,7 @@ list(APPEND ep
     zstd
     # depth 1
     libarchive
+    libjxl
     libpng
     libxml2
     libzimg
@@ -44,7 +45,6 @@ list(APPEND ep
     vulkan
     # depth 2
     freetype2
-    libjxl
     libplacebo
     ngtcp2
     # depth 3
