@@ -150,7 +150,7 @@ ninja mpv
     - libbluray (with libudfread)
     - libjpeg
     - libjxl (with highway)
-    - libplacebo (with glad, fast_float, xxhash)
+    - libplacebo (with fast_float, xxhash)
     - libpng
     - libsoxr
     - libunibreak

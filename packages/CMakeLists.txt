@@ -9,7 +9,6 @@ list(APPEND ep
     dav1d
     fast_float
     fribidi
-    glad
     glslang
     graphengine
     highway
