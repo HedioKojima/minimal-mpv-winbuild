@@ -75,7 +75,6 @@ ExternalProject_Add(llvm
         -DCMAKE_CXX_COMPILER=clang++
         -DCMAKE_CXX_COMPILER_CLANG_SCAN_DEPS=OFF
         -DCMAKE_CXX_SCAN_FOR_MODULES=OFF
-        -DCMAKE_CXX_STANDARD=20
         -DBUILD_SHARED_LIBS=OFF
         ${llvm_ccache}
         -DCLANG_BUILD_TOOLS=OFF
