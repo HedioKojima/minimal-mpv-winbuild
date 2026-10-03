@@ -52,10 +52,8 @@ ExternalProject_Add(openssl
         no-krb5kdf
         no-ktls
         no-legacy
-        no-md2
         no-md4
         no-mdc2
-        no-module
         no-multiblock
         no-nextprotoneg
         no-ocb
@@ -70,7 +68,6 @@ ExternalProject_Add(openssl
         no-seed
         no-shared
         no-siphash
-        no-sm2
         no-sm3
         no-sm4
         no-snmpkdf
@@ -79,13 +76,11 @@ ExternalProject_Add(openssl
         no-sshkdf
         no-sskdf
         no-ssl-trace
-        no-tests
         no-thread-pool
         no-tls1-method
         no-tls1_1-method
         no-trace
         no-ts
-        no-uplink
         no-whirlpool
         no-winstore
         no-x942kdf
