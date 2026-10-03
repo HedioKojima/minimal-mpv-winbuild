@@ -15,7 +15,6 @@ ExternalProject_Add(libjpeg
         -DENABLE_STATIC=ON
         -DWITH_ARITH_ENC=OFF
         -DWITH_SIMD=ON
-        -DWITH_TESTS=OFF
         -DWITH_TOOLS=OFF
         -DWITH_TURBOJPEG=OFF
     BUILD_COMMAND ${EXEC} ninja -C <BINARY_DIR>
