@@ -21,7 +21,7 @@ ExternalProject_Add(libarchive
         -DBUILD_TESTING=OFF
         -DENABLE_BZip2=ON
         -DENABLE_CAT=OFF
-        -DENABLE_CNG=ON
+        -DENABLE_CNG=OFF
         -DENABLE_CPIO=OFF
         -DENABLE_EXPAT=OFF
         -DENABLE_ICONV=ON
