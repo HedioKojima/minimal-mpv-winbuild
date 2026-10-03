@@ -22,7 +22,6 @@ ExternalProject_Add(harfbuzz
         -Dglib=disabled
         -Dgobject=disabled
         -Dgpu=disabled
-        -Dgpu_demo=disabled
         -Dicu=disabled
         -Dintrospection=disabled
         -Dpng=disabled
