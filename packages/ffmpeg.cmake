@@ -36,7 +36,6 @@ ExternalProject_Add(ffmpeg
         --pkg-config-flags=--static
         --enable-amf
         --enable-bzlib
-        --enable-cross-compile
         --enable-cuda-llvm
         --enable-d3d11va
         --enable-d3d12va
@@ -74,10 +73,7 @@ ExternalProject_Add(ffmpeg
         --disable-ffprobe
         --disable-indev=gdigrab
         --disable-indev=vfwcap
-        --disable-outdevs
-        --disable-sdl2
         --disable-vaapi
-        --disable-vdpau
         --disable-protocol=gopher
         --disable-protocol=gophers
         --disable-protocol=mmsh
