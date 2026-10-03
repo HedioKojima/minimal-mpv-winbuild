@@ -8,7 +8,7 @@ ExternalProject_Add(nvcodec-headers
     INSTALL_COMMAND ${MAKE} -C <SOURCE_DIR>
         PREFIX=${MINGW_INSTALL_PREFIX}
         install
-    LOG_DOWNLOAD 1 LOG_UPDATE 1 LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1
+    LOG_DOWNLOAD 1 LOG_UPDATE 1 LOG_INSTALL 1
 )
 
 force_rebuild_git(nvcodec-headers)
