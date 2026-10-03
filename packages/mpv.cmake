@@ -29,7 +29,6 @@ ExternalProject_Add(mpv
         --buildtype=release
         --default-library=shared
         --prefer-static
-        -Doptimization=3
         -Damf=enabled
         -Dcdda=disabled
         -Dcplugins=disabled
