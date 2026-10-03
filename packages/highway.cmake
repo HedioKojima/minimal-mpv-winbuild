@@ -11,6 +11,7 @@ ExternalProject_Add(highway
         --default-library=static
         -Dcontrib=disabled
         -Dexamples=disabled
+        -Dtest_standalone=true
         -Dtests=disabled
     BUILD_COMMAND ${EXEC} ninja -C <BINARY_DIR>
     INSTALL_COMMAND ${EXEC} ninja -C <BINARY_DIR> install
