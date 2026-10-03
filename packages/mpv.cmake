@@ -1,5 +1,6 @@
 ExternalProject_Add(mpv
     DEPENDS
+        amf-headers
         curl
         ffmpeg
         lcms2
@@ -11,6 +12,7 @@ ExternalProject_Add(mpv
         libplacebo
         libzimg
         luajit
+        nvcodec-headers
         shaderc
         spirv-cross
         subrandr
