@@ -29,7 +29,6 @@ ExternalProject_Add(mpv
         --libdir=${MINGW_INSTALL_PREFIX}/lib
         --cross-file=${MESON_CROSS}
         --buildtype=release
-        --default-library=shared
         --prefer-static
         -Damf=enabled
         -Dcdda=disabled
@@ -40,7 +39,6 @@ ExternalProject_Add(mpv
         -Dd3d11=enabled
         -Dd3d9-hwaccel=disabled
         -Ddirect3d=disabled
-        -Ddvbin=disabled
         -Ddvdnav=disabled
         -Dfuzzers=false
         -Dgl=disabled
