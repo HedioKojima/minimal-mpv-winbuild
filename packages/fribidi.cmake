@@ -11,7 +11,6 @@ ExternalProject_Add(fribidi
         --buildtype=release
         --default-library=static
         -Dbin=false
-        -Ddeprecated=false
         -Ddocs=false
         -Dtests=false
     BUILD_COMMAND ${EXEC} ninja -C <BINARY_DIR>
