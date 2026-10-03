@@ -18,7 +18,6 @@ ExternalProject_Add(freetype2
         -Dbrotli=enabled
         -Dbzip2=disabled
         -Dharfbuzz=disabled
-        -Dhvf=disabled
         -Dmmap=enabled
         -Dpng=enabled
         -Dtests=disabled
