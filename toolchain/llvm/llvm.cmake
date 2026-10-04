@@ -23,27 +23,10 @@ list(TRANSFORM llvm_sparse_excludes PREPEND "!/")
 list(JOIN llvm_sparse_excludes " " llvm_sparse_excludes)
 
 set(llvm_toolchain_tools
-    llvm-addr2line
-    llvm-ar
-    llvm-config
-    llvm-cov
     llvm-cvtres
-    llvm-dlltool
     llvm-driver
-    llvm-ml
-    llvm-nm
-    llvm-objcopy
-    llvm-objdump
     llvm-profdata
-    llvm-ranlib
-    llvm-rc
-    llvm-readelf
-    llvm-readobj
-    llvm-size
     llvm-strings
-    llvm-strip
-    llvm-symbolizer
-    llvm-windres
 )
 list(JOIN llvm_toolchain_tools "," llvm_toolchain_tools)
 
