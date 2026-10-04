@@ -30,6 +30,27 @@ set(llvm_toolchain_tools
 )
 list(JOIN llvm_toolchain_tools "," llvm_toolchain_tools)
 
+set(llvm_distribution_components
+    clang
+    clang-resource-headers
+    clang-scan-deps
+    lld
+    llvm-ar
+    llvm-cvtres
+    llvm-driver
+    llvm-ml
+    llvm-nm
+    llvm-objcopy
+    llvm-objdump
+    llvm-profdata
+    llvm-rc
+    llvm-readobj
+    llvm-size
+    llvm-strings
+    llvm-symbolizer
+)
+list(JOIN llvm_distribution_components "," llvm_distribution_components)
+
 set(llvm_linker_flags
     -fuse-ld=lld
     -static-libstdc++
@@ -83,6 +104,7 @@ ExternalProject_Add(llvm
         -DCLANG_TOOL_OFFLOAD_ARCH_BUILD=OFF
         -DLLD_DEFAULT_LD_LLD_IS_MINGW=ON
         -DLLVM_BUILD_UTILS=OFF
+        -DLLVM_DISTRIBUTION_COMPONENTS='${llvm_distribution_components}'
         -DLLVM_ENABLE_LIBCXX=ON
         -DLLVM_ENABLE_LIBEDIT=OFF
         -DLLVM_ENABLE_LIBPFM=OFF
@@ -191,8 +213,8 @@ ExternalProject_Add(llvm
         "-DCMAKE_C_FLAGS='-g0 -ftls-model=local-exec ${llvm_lto} ${llvm_pgo}'"
         "-DCMAKE_CXX_FLAGS='-g0 -ftls-model=local-exec ${llvm_lto} ${llvm_pgo}'"
         "-DCMAKE_EXE_LINKER_FLAGS='${llvm_linker_flags}'"
-    BUILD_COMMAND ${EXEC} ninja -C <BINARY_DIR>
-    INSTALL_COMMAND ${EXEC} ninja -C <BINARY_DIR> install
+    BUILD_COMMAND ${EXEC} ninja -C <BINARY_DIR> distribution
+    INSTALL_COMMAND ${EXEC} ninja -C <BINARY_DIR> install-distribution
     LOG_DOWNLOAD 1 LOG_UPDATE 1 LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1
 )
 
