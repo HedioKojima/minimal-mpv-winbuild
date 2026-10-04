@@ -9,7 +9,6 @@ ExternalProject_Add(subrandr
     GIT_TAG master
     BUILD_IN_SOURCE 1
     UPDATE_COMMAND ""
-    PATCH_COMMAND ""
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ${EXEC}
         LD_PRELOAD=

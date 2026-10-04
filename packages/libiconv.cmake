@@ -1,6 +1,4 @@
-# libarchive required 3rd party iconv.pc when linking
 set(VERSION "1.19")
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/libiconv.pc.in ${CMAKE_CURRENT_BINARY_DIR}/libiconv.pc @ONLY)
 
 ExternalProject_Add(libiconv
     URL https://ftp.gnu.org/pub/gnu/libiconv/libiconv-${VERSION}.tar.gz
@@ -18,9 +16,4 @@ ExternalProject_Add(libiconv
     LOG_DOWNLOAD 1 LOG_UPDATE 1 LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1
 )
 
-ExternalProject_Add_Step(libiconv install-pc
-    DEPENDEES install
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/libiconv.pc ${MINGW_INSTALL_PREFIX}/lib/pkgconfig/iconv.pc
-)
-
-cleanup(libiconv install-pc)
+cleanup(libiconv install)
