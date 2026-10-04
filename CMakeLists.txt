@@ -17,16 +17,12 @@ set(TARGET_ARCH "x86_64-w64-mingw32" CACHE STRING "The target architecture for t
 string(REGEX MATCH "^[^-]+" TARGET_CPU ${TARGET_ARCH})
 set(RUST_TARGET "${TARGET_CPU}-pc-windows-gnullvm")
 
-execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpmachine OUTPUT_VARIABLE HOST_ARCH)
-string(REGEX MATCH "^[^-]+" HOST_CPU ${HOST_ARCH})
-
 execute_process(COMMAND meson --version OUTPUT_VARIABLE MESON_VERSION)
 if(NOT MESON_VERSION VERSION_GREATER_EQUAL "1.11.0")
     message(FATAL_ERROR "Meson 1.11.0 or greater is required. Install it with pip instead.")
 endif()
 
 set(TARGET_CPU_FAMILY "x86_64")
-set(TARGET_BITS 64)
 set(LLVM_ARCH "x86-64" CACHE STRING "Target architecture for x86_64")
 
 processorcount(CPU_COUNT)
@@ -99,13 +95,6 @@ execute_process(
 )
 if(CC_OUTPUT MATCHES "__AVX")
     set(LLVM_ARCH_HAS_AVX ON)
-endif()
-if(CC_OUTPUT MATCHES "__AVX512F")
-    set(LLVM_ARCH_HAS_AVX512 ON)
-endif()
-
-if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/publish.in)
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/publish.in ${CMAKE_CURRENT_BINARY_DIR}/publish)
 endif()
 
 message(STATUS "MINGW_INSTALL_PREFIX dir: ${MINGW_INSTALL_PREFIX}")
