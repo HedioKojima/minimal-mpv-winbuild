@@ -6,7 +6,7 @@ ExternalProject_Add(cppwinrt
     GIT_CLONE_FLAGS "--sparse --filter=tree:0"
     GIT_CLONE_POST_COMMAND "sparse-checkout set --no-cone /* !/docs !/test"
     UPDATE_COMMAND ""
-    CONFIGURE_COMMAND ${EXEC} CONF=1 PATH=$O_PATH cmake -H<SOURCE_DIR> -B<BINARY_DIR>
+    CONFIGURE_COMMAND ${EXEC} CONF=1 PATH=$O_PATH ${CMAKE_COMMAND} -H<SOURCE_DIR> -B<BINARY_DIR>
         -GNinja
         -DCMAKE_BUILD_TYPE=Release
         -DBUILD_SHARED_LIBS=OFF
