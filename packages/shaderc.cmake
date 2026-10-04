@@ -23,7 +23,6 @@ ExternalProject_Add(shaderc
         -DSHADERC_SKIP_EXECUTABLES=ON
         -DSHADERC_SKIP_TESTS=ON
         -DSPIRV_SKIP_EXECUTABLES=ON
-        -DSPIRV_TOOLS_BUILD_STATIC=ON
         -DSPIRV_WERROR=OFF
     BUILD_COMMAND ${EXEC} ninja -C <BINARY_DIR> libshaderc_combined.a shaderc_combined-pkg-config
     INSTALL_COMMAND ""

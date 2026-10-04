@@ -21,7 +21,6 @@ ExternalProject_Add(ngtcp2
         -DENABLE_OPENSSL=ON
         -DENABLE_PICOTLS=OFF
         -DENABLE_SHARED_LIB=OFF
-        -DENABLE_STATIC_LIB=ON
         -DENABLE_WOLFSSL=OFF
         "-DCMAKE_EXE_LINKER_FLAGS='-lbrotlicommon -lbrotlidec -lbrotlienc -lz -lzstd'"
     BUILD_COMMAND ${EXEC} ninja -C <BINARY_DIR>
