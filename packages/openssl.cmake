@@ -50,7 +50,6 @@ ExternalProject_Add(openssl
         no-integrity-only-ciphers
         no-kbkdf
         no-krb5kdf
-        no-ktls
         no-legacy
         no-md4
         no-mdc2
@@ -61,7 +60,6 @@ ExternalProject_Add(openssl
         no-quic
         no-rc2
         no-rc4
-        no-rc5
         no-rfc3779
         no-rmd160
         no-scrypt
@@ -79,7 +77,6 @@ ExternalProject_Add(openssl
         no-thread-pool
         no-tls1-method
         no-tls1_1-method
-        no-trace
         no-ts
         no-whirlpool
         no-winstore
