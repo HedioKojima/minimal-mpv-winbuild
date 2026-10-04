@@ -18,7 +18,7 @@ ExternalProject_Add(ngtcp2
         -DENABLE_SHARED_LIB=OFF
         "-DCMAKE_EXE_LINKER_FLAGS='-lbrotlicommon -lbrotlidec -lbrotlienc -lz -lzstd'"
     BUILD_COMMAND ${EXEC} ninja -C <BINARY_DIR>
-    INSTALL_COMMAND ${EXEC} ${CMAKE_COMMAND} --install <BINARY_DIR>
+    INSTALL_COMMAND ${EXEC} ninja -C <BINARY_DIR> install
     LOG_DOWNLOAD 1 LOG_UPDATE 1 LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1
 )
 
