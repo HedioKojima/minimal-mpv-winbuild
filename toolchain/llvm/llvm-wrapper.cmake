@@ -26,13 +26,7 @@ ExternalProject_Add(llvm-wrapper
 )
 
 foreach(compiler clang++ g++ c++ clang gcc as)
-    set(driver_mode "")
-    set(clang_compiler "")
-    
-    if (compiler STREQUAL "g++" OR compiler STREQUAL "c++")
-        set(driver_mode "--driver-mode=g++ -pthread")
-        set(clang_compiler "clang++")
-    elseif(compiler STREQUAL "clang++")
+    if(compiler MATCHES "\\+\\+$")
         set(driver_mode "--driver-mode=g++")
         set(clang_compiler "clang++")
     else()

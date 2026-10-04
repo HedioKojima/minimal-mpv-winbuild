@@ -16,7 +16,6 @@ elseif(LLVM_ENABLE_PGO STREQUAL "USE")
     set(llvm_pgo "-fprofile-use=${LLVM_PROFDATA_FILE}")
 endif()
 
-set(ld_m_flag "i386pep")
 set(M_TUNE "generic")
 set(cfi "-mguard=cf")
 if (LLVM_ARCH STREQUAL "x86-64")
