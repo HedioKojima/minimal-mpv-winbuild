@@ -7,7 +7,6 @@ ExternalProject_Add(highway
         --prefix=${MINGW_INSTALL_PREFIX}
         --cross-file=${MESON_CROSS}
         --buildtype=release
-        --default-library=static
         -Dcontrib=disabled
         -Dexamples=disabled
         -Dtest_standalone=true

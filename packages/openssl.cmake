@@ -14,11 +14,9 @@ ExternalProject_Add(openssl
         --cross-compile-prefix=${TARGET_ARCH}-
         --prefix=${MINGW_INSTALL_PREFIX}
         --libdir=lib
-        --release
         mingw64
         enable-brotli
         enable-ec_nistp_64_gcc_128
-        enable-threads
         enable-zlib
         enable-zstd
         no-autoload-config
@@ -34,7 +32,6 @@ ExternalProject_Add(openssl
         no-cmp
         no-cms
         no-ct
-        no-demos
         no-dh
         no-docs
         no-dsa

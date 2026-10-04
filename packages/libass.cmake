@@ -13,16 +13,11 @@ ExternalProject_Add(libass
         --prefix=${MINGW_INSTALL_PREFIX}
         --cross-file=${MESON_CROSS}
         --buildtype=release
-        --default-library=static
         -Dasm=enabled
         -Dcheckasm=disabled
-        -Dcompare=disabled
         -Ddirectwrite=enabled
         -Dfontconfig=disabled
-        -Dfuzz=disabled
         -Dlibunibreak=enabled
-        -Dprofile=disabled
-        -Dtest=disabled
     BUILD_COMMAND ${EXEC} ninja -C <BINARY_DIR>
     INSTALL_COMMAND ${EXEC} ninja -C <BINARY_DIR> install
     LOG_DOWNLOAD 1 LOG_UPDATE 1 LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1

@@ -12,7 +12,6 @@ ExternalProject_Add(vulkan
         -DCMAKE_BUILD_TYPE=Release
         -DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}
         -DCMAKE_INSTALL_PREFIX=${MINGW_INSTALL_PREFIX}
-        -DBUILD_TESTS=OFF
         -DUSE_GAS=ON
     BUILD_COMMAND ${EXEC} ninja -C <BINARY_DIR>
     INSTALL_COMMAND ${EXEC} ninja -C <BINARY_DIR> install

@@ -17,9 +17,7 @@ ExternalProject_Add(freetype2
         -Dbrotli=enabled
         -Dbzip2=disabled
         -Dharfbuzz=disabled
-        -Dmmap=enabled
         -Dpng=enabled
-        -Dtests=disabled
         -Dzlib=system
     BUILD_COMMAND ${EXEC} ninja -C <BINARY_DIR>
     INSTALL_COMMAND ${EXEC} ninja -C <BINARY_DIR> install

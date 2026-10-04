@@ -13,7 +13,6 @@ ExternalProject_Add(harfbuzz
         --cross-file=${MESON_CROSS}
         --buildtype=release
         --default-library=static
-        -Dbenchmark=disabled
         -Dcairo=disabled
         -Dchafa=disabled
         -Ddocs=disabled
@@ -22,7 +21,6 @@ ExternalProject_Add(harfbuzz
         -Dgobject=disabled
         -Dgpu=disabled
         -Dicu=disabled
-        -Dintrospection=disabled
         -Dpng=disabled
         -Draster=disabled
         -Dsubset=disabled

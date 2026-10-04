@@ -61,7 +61,6 @@ ExternalProject_Add(ffmpeg
         --enable-nvdec
         --enable-nvenc
         --enable-openssl
-        --enable-runtime-cpudetect
         --enable-version3
         --enable-vulkan
         --enable-zlib

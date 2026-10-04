@@ -24,7 +24,6 @@ ExternalProject_Add(libplacebo
         -Ddemos=false
         -Ddovi=enabled
         -Dgl-proc-addr=disabled
-        -Dglslang=disabled
         -Dlcms=enabled
         -Dlibdovi=disabled
         -Dopengl=disabled

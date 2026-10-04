@@ -9,12 +9,8 @@ ExternalProject_Add(zstd
     CONFIGURE_COMMAND ${EXEC} CONF=1 meson setup <BINARY_DIR> <SOURCE_DIR>/build/meson
         --prefix=${MINGW_INSTALL_PREFIX}
         --cross-file=${MESON_CROSS}
-        --buildtype=release
         --default-library=static
-        -Dbin_contrib=false
         -Dbin_programs=false
-        -Dbin_tests=false
-        -Dlegacy_level=0
     BUILD_COMMAND ${EXEC} ninja -C <BINARY_DIR>
     INSTALL_COMMAND ${EXEC} ninja -C <BINARY_DIR> install
     LOG_DOWNLOAD 1 LOG_UPDATE 1 LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1
