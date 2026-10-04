@@ -63,7 +63,6 @@ if [[ -n "$mtune" ]]; then clang_flags="-mtune=$mtune"; fi
 echo ">> [1/7] Configure mpv ($march${mtune:+, -mtune=$mtune}) in $march_dir"
 cmake \
     -DTARGET_ARCH=x86_64-w64-mingw32 \
-    -DCOMPILER_TOOLCHAIN=clang \
     -DLLVM_ARCH="$march" \
     -DCMAKE_INSTALL_PREFIX="$clang_root" \
     -DMINGW_INSTALL_PREFIX="$sysroot" \

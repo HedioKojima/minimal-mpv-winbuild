@@ -114,7 +114,7 @@ jobs:
 
       - name: Configure CMake and download sources
         run: |
-          cmake -DTARGET_ARCH=$ARCH-w64-mingw32 -DCOMPILER_TOOLCHAIN=clang -DLLVM_ARCH=${{ matrix.llvm_arch }} -DCMAKE_INSTALL_PREFIX=$PWD/clang_root -DMINGW_INSTALL_PREFIX=$PWD/$BUILD_DIR/$ARCH-${{ env.SYSROOT_LEVEL }}-w64-mingw32 -DSINGLE_SOURCE_LOCATION=$PWD/src_packages -DRUSTUP_LOCATION=$PWD/clang_root/install_rustup -DENABLE_CCACHE=ON -DCLANG_PACKAGES_LTO=ON -DCLANG_FLAGS="${{ matrix.clang_flags }}" -G Ninja --fresh -B $BUILD_DIR -S $PWD
+          cmake -DTARGET_ARCH=$ARCH-w64-mingw32 -DLLVM_ARCH=${{ matrix.llvm_arch }} -DCMAKE_INSTALL_PREFIX=$PWD/clang_root -DMINGW_INSTALL_PREFIX=$PWD/$BUILD_DIR/$ARCH-${{ env.SYSROOT_LEVEL }}-w64-mingw32 -DSINGLE_SOURCE_LOCATION=$PWD/src_packages -DRUSTUP_LOCATION=$PWD/clang_root/install_rustup -DENABLE_CCACHE=ON -DCLANG_PACKAGES_LTO=ON -DCLANG_FLAGS="${{ matrix.clang_flags }}" -G Ninja --fresh -B $BUILD_DIR -S $PWD
           ninja -C $BUILD_DIR download || true
 
       - name: Build mpv

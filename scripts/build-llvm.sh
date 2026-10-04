@@ -49,7 +49,6 @@ rm -rf "$base_dir" "$march_dir" "$clang_root" "$profdata"
 
 cmake_args=(
     -DTARGET_ARCH=x86_64-w64-mingw32
-    -DCOMPILER_TOOLCHAIN=clang
     -DCMAKE_INSTALL_PREFIX="$clang_root"
     -DSINGLE_SOURCE_LOCATION="$buildroot/src_packages"
     -DRUSTUP_LOCATION="$clang_root/install_rustup"
