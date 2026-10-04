@@ -79,6 +79,7 @@ ExternalProject_Add(llvm
         -DCMAKE_CXX_COMPILER_CLANG_SCAN_DEPS=OFF
         -DCMAKE_CXX_SCAN_FOR_MODULES=OFF
         ${llvm_ccache}
+        ${llvm_pgo}
         -DCLANG_BUILD_TOOLS=OFF
         -DCLANG_DEFAULT_CXX_STDLIB=libc++
         -DCLANG_DEFAULT_LINKER=lld
@@ -210,8 +211,8 @@ ExternalProject_Add(llvm
         -DLLVM_TOOL_YAML2OBJ_BUILD=OFF
         -DLLVM_TOOLCHAIN_TOOLS='${llvm_toolchain_tools}'
         "-DLLVM_THINLTO_CACHE_PATH='${CMAKE_INSTALL_PREFIX}/llvm-thinlto'"
-        "-DCMAKE_C_FLAGS='-g0 -ftls-model=local-exec ${llvm_lto} ${llvm_pgo}'"
-        "-DCMAKE_CXX_FLAGS='-g0 -ftls-model=local-exec ${llvm_lto} ${llvm_pgo}'"
+        "-DCMAKE_C_FLAGS='-g0 -ftls-model=local-exec ${llvm_lto}'"
+        "-DCMAKE_CXX_FLAGS='-g0 -ftls-model=local-exec ${llvm_lto}'"
         "-DCMAKE_EXE_LINKER_FLAGS='${llvm_linker_flags}'"
     BUILD_COMMAND ${EXEC} ninja -C <BINARY_DIR> distribution
     INSTALL_COMMAND ${EXEC} ninja -C <BINARY_DIR> install-distribution
