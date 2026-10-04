@@ -1,6 +1,3 @@
-set(LUAJIT_HOST_GCC gcc)
-set(LUAJIT_GCC_ARGS "-m64")
-
 set(EXPORT
     "CROSS=${TARGET_ARCH}-
     TARGET_SYS=Windows
@@ -20,14 +17,8 @@ ExternalProject_Add(luajit
     GIT_TAG v2.1
     UPDATE_COMMAND ""
     CONFIGURE_COMMAND ""
-    BUILD_COMMAND ${MAKE} -C <SOURCE_DIR>/src
-        "HOST_CC='${LUAJIT_HOST_GCC} ${LUAJIT_GCC_ARGS}'"
-        ${EXPORT}
-        amalg
-    INSTALL_COMMAND ${MAKE}
-        "HOST_CC='${LUAJIT_HOST_GCC} ${LUAJIT_GCC_ARGS}'"
-        ${EXPORT}
-        install
+    BUILD_COMMAND ${MAKE} -C <SOURCE_DIR>/src ${EXPORT} amalg
+    INSTALL_COMMAND ${MAKE} ${EXPORT} install
     BUILD_IN_SOURCE 1
     LOG_DOWNLOAD 1 LOG_UPDATE 1 LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1
 )
