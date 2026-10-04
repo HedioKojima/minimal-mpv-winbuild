@@ -4,7 +4,6 @@ ExternalProject_Add(llvm-clang
     DEPENDS
         llvm-libcxx
         winpthreads
-        gendef
         cppwinrt
     DOWNLOAD_COMMAND ""
     CONFIGURE_COMMAND ""

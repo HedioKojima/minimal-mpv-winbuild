@@ -9,9 +9,7 @@ list(APPEND ep
     windows-rs
     # depth 1
     cppwinrt
-    gendef
     mingw-w64-headers
-    widl
     # depth 2
     mingw-w64-crt
     # depth 3
