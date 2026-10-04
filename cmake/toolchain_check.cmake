@@ -1,5 +1,3 @@
-set(llvm_wrapper "llvm-wrapper")
-set(cfguard "--enable-cfguard")
 set(opt "-O3")
 if(LLVM_CCACHE_BUILD)
     set(llvm_ccache "-DLLVM_CCACHE_BUILD=ON -DLLVM_CCACHE_DIR=${LLVM_CCACHE_DIR} -DLLVM_CCACHE_MAXSIZE=${LLVM_CCACHE_MAXSIZE}")

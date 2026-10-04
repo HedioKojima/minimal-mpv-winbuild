@@ -3,7 +3,7 @@ include(${PROJECT_SOURCE_DIR}/cmake/toolchain_check.cmake)
 list(APPEND ep
     # depth 0
     llvm
-    ${llvm_wrapper}
+    llvm-wrapper
     mingw-w64
     rustup
     windows-rs
