@@ -2,7 +2,6 @@ ExternalProject_Add(llvm-libcxx
     DEPENDS
         llvm-compiler-rt-builtin
     DOWNLOAD_COMMAND ""
-    UPDATE_COMMAND ""
     SOURCE_DIR ${LLVM_SRC}
     LIST_SEPARATOR ,
     CONFIGURE_COMMAND ${EXEC} CONF=1 ${CMAKE_COMMAND} -H<SOURCE_DIR>/runtimes -B<BINARY_DIR>
@@ -37,9 +36,9 @@ ExternalProject_Add(llvm-libcxx
         -DLIBUNWIND_USE_COMPILER_RT=TRUE
         -DLLVM_ENABLE_RUNTIMES='libcxx,libcxxabi,libunwind'
     BUILD_COMMAND ${EXEC} LTO=0 ninja -C <BINARY_DIR>
-    INSTALL_COMMAND ${EXEC} LTO=0 ninja -C <BINARY_DIR> install
+    INSTALL_COMMAND ${EXEC} ninja -C <BINARY_DIR> install
             COMMAND bash -c "cp ${MINGW_INSTALL_PREFIX}/lib/libc++.a ${MINGW_INSTALL_PREFIX}/lib/libstdc++.a"
-    LOG_DOWNLOAD 1 LOG_UPDATE 1 LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1
+    LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1
 )
 
 cleanup(llvm-libcxx install)

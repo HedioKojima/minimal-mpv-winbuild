@@ -17,7 +17,6 @@ elseif(LLVM_ENABLE_PGO STREQUAL "USE")
 endif()
 
 set(ld_m_flag "i386pep")
-set(crt_lib "--disable-lib32 --enable-lib64")
 set(M_TUNE "generic")
 set(cfi "-mguard=cf")
 if (LLVM_ARCH STREQUAL "x86-64")

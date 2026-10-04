@@ -2,9 +2,8 @@ ExternalProject_Add(gendef
     DEPENDS
         mingw-w64
     DOWNLOAD_COMMAND ""
-    UPDATE_COMMAND ""
     SOURCE_DIR ${MINGW_SRC}
-    CONFIGURE_COMMAND ${EXEC} CONF=1 <SOURCE_DIR>/mingw-w64-tools/gendef/configure
+    CONFIGURE_COMMAND ${EXEC} <SOURCE_DIR>/mingw-w64-tools/gendef/configure
         --prefix=${CMAKE_INSTALL_PREFIX}
     BUILD_COMMAND ${MAKE}
     INSTALL_COMMAND ${MAKE} install-strip

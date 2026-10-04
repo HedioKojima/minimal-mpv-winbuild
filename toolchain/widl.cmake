@@ -3,7 +3,7 @@ ExternalProject_Add(widl
         mingw-w64
     DOWNLOAD_COMMAND ""
     SOURCE_DIR ${MINGW_SRC}
-    CONFIGURE_COMMAND ${EXEC} CONF=1 <SOURCE_DIR>/mingw-w64-tools/widl/configure
+    CONFIGURE_COMMAND ${EXEC} <SOURCE_DIR>/mingw-w64-tools/widl/configure
         --prefix=${CMAKE_INSTALL_PREFIX}
         --target=${TARGET_ARCH}
         --with-widl-includedir=${MINGW_INSTALL_PREFIX}/include

@@ -5,8 +5,6 @@ ExternalProject_Add(subrandr
     GIT_REPOSITORY https://github.com/afishhh/subrandr.git
     SOURCE_DIR ${SOURCE_LOCATION}
     GIT_CLONE_FLAGS "--filter=tree:0"
-    GIT_REMOTE_NAME origin
-    GIT_TAG master
     BUILD_IN_SOURCE 1
     UPDATE_COMMAND ""
     CONFIGURE_COMMAND ""

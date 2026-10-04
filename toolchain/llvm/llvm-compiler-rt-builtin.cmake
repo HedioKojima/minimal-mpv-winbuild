@@ -3,7 +3,6 @@ ExternalProject_Add(llvm-compiler-rt-builtin
         mingw-w64-headers
         mingw-w64-crt
     DOWNLOAD_COMMAND ""
-    UPDATE_COMMAND ""
     SOURCE_DIR ${LLVM_SRC}
     LIST_SEPARATOR ,
     CONFIGURE_COMMAND ${EXEC} CONF=1 ${CMAKE_COMMAND} -H<SOURCE_DIR>/compiler-rt/lib/builtins -B<BINARY_DIR>
@@ -26,8 +25,8 @@ ExternalProject_Add(llvm-compiler-rt-builtin
         -DCOMPILER_RT_USE_BUILTINS_LIBRARY=TRUE
         -DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=TRUE
     BUILD_COMMAND ${EXEC} LTO=0 ninja -C <BINARY_DIR>
-    INSTALL_COMMAND ${EXEC} LTO=0 ninja -C <BINARY_DIR> install
-    LOG_DOWNLOAD 1 LOG_UPDATE 1 LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1
+    INSTALL_COMMAND ${EXEC} ninja -C <BINARY_DIR> install
+    LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1
 )
 
 cleanup(llvm-compiler-rt-builtin install)

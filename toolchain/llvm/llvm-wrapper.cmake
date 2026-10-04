@@ -1,8 +1,6 @@
 find_program(PKGCONFIG NAMES pkgconf)
 ExternalProject_Add(llvm-wrapper
     DOWNLOAD_COMMAND ""
-    SOURCE_DIR ${SOURCE_LOCATION}
-    UPDATE_COMMAND ""
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
     COMMAND ${CMAKE_COMMAND} -E make_directory ${MINGW_INSTALL_PREFIX}
