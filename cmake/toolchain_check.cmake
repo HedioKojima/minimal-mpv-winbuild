@@ -1,5 +1,4 @@
 set(llvm_wrapper "llvm-wrapper")
-set(llvm_libcxx "llvm-libcxx")
 set(cfguard "--enable-cfguard")
 set(opt "-O3")
 if(LLVM_CCACHE_BUILD)

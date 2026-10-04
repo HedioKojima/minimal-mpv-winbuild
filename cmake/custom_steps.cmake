@@ -146,28 +146,6 @@ PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_
     endif()
 endfunction()
 
-function(force_rebuild_svn _name)
-    ExternalProject_Add_Step(${_name} force-update
-        DEPENDEES download update
-        DEPENDERS patch build install
-        COMMAND svn revert -R .
-        COMMAND svn up
-        WORKING_DIRECTORY <SOURCE_DIR>
-        LOG 1
-    )
-endfunction()
-
-function(force_rebuild_hg _name)
-    ExternalProject_Add_Step(${_name} force-update
-        DEPENDEES download update
-        DEPENDERS patch build install
-        COMMAND hg --config "extensions.purge=" purge --all
-        COMMAND hg update -C
-        WORKING_DIRECTORY <SOURCE_DIR>
-        LOG 1
-    )
-endfunction()
-
 function(force_meson_configure _name)
     ExternalProject_Add_Step(${_name} force-meson-configure
         DEPENDERS configure
