@@ -1,7 +1,6 @@
 #!/bin/bash
 # Reset git-based package sources for a fresh re-clone. For each package, ninja
-# runs its <pkg>-fullclean and <pkg>-removeprefix. mingw-w64 is skipped: it is a
-# source-only ExternalProject and has neither target.
+# runs its <pkg>-fullclean and <pkg>-removeprefix.
 #
 # Usage: clean-repo.sh [-p pkg]... [buildroot]
 #   -p, --pkg pkg  package to clean (repeatable; default: every git source clone)
@@ -41,16 +40,6 @@ done
 
 ninja_targets=$(ninja -C "${build_dirs[0]}" -t targets all) || exit 1
 
-source_only_pkgs=(mingw-w64)
-
-is_source_only() {
-    local p
-    for p in "${source_only_pkgs[@]}"; do
-        [[ "$p" == "$1" ]] && return 0
-    done
-    return 1
-}
-
 has_clean_target() { # $1 = package
     awk -F: -v target="$1-fullclean" '$1 == target { found = 1 } END { exit !found }' <<< "$ninja_targets"
 }
@@ -59,7 +48,6 @@ if [[ ${#pkgs[@]} -eq 0 ]]; then
     for d in "$src_packages"/*/; do
         pkg=$(basename "$d")
         [[ -d "$d.git" ]] || continue
-        is_source_only "$pkg" && continue
         if ! has_clean_target "$pkg"; then
             echo "Skip $pkg: not a package of this checkout" >&2
             continue
@@ -68,10 +56,6 @@ if [[ ${#pkgs[@]} -eq 0 ]]; then
     done
 else
     for pkg in "${pkgs[@]}"; do
-        if is_source_only "$pkg"; then
-            echo "No clean target for $pkg: it is a source-only package" >&2
-            exit 1
-        fi
         if ! has_clean_target "$pkg"; then
             echo "No clean target for $pkg: not a package of this checkout" >&2
             exit 1

@@ -10,4 +10,5 @@ ExternalProject_Add(mingw-w64
 )
 
 force_rebuild_git(mingw-w64)
+cleanup(mingw-w64 install)
 get_property(MINGW_SRC TARGET mingw-w64 PROPERTY _EP_SOURCE_DIR)
