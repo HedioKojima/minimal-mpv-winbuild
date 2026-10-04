@@ -3,12 +3,12 @@ ExternalProject_Add(mingw-w64-headers
         mingw-w64
     DOWNLOAD_COMMAND ""
     SOURCE_DIR ${MINGW_SRC}
-    CONFIGURE_COMMAND <SOURCE_DIR>/mingw-w64-headers/configure
+    CONFIGURE_COMMAND ${EXEC} CONF=1 <SOURCE_DIR>/mingw-w64-headers/configure
         --host=${TARGET_ARCH}
         --prefix=${MINGW_INSTALL_PREFIX}
         --enable-idl
     BUILD_COMMAND ""
-    INSTALL_COMMAND make install-strip
+    INSTALL_COMMAND ${MAKE} install
     LOG_CONFIGURE 1 LOG_INSTALL 1
 )
 

@@ -7,7 +7,7 @@ ExternalProject_Add(cppwinrt
     GIT_CLONE_POST_COMMAND "sparse-checkout set --no-cone /* !/docs !/test"
     UPDATE_COMMAND ""
     CONFIGURE_COMMAND ${EXEC} ${CMAKE_COMMAND} -H<SOURCE_DIR> -B<BINARY_DIR>
-        -GNinja
+        -G Ninja
         -DCMAKE_BUILD_TYPE=Release
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
     BUILD_COMMAND ${EXEC} ninja -C <BINARY_DIR>
