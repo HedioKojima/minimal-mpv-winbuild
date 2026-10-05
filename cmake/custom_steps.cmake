@@ -92,7 +92,8 @@ if [[ ! -f \"${stamp_dir}/${_name}-patch\"  || \"${stamp_dir}/${_name}-download\
     fi
 else
     git -C ${source_dir} reset --hard -q
-fi")
+fi
+git -C ${source_dir} submodule --quiet update --recursive")
 file(CHMOD ${stamp_dir}/reset_head.sh 
 PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 
