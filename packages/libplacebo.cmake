@@ -30,7 +30,6 @@ ExternalProject_Add(libplacebo
         -Dshaderc=enabled
         -Dunwind=disabled
         -Dvk-proc-addr=enabled
-        -Dvulkan-registry='${MINGW_INSTALL_PREFIX}/share/vulkan/registry/vk.xml'
         -Dvulkan=enabled
         -Dxxhash=enabled
     BUILD_COMMAND ${EXEC} ninja -C <BINARY_DIR>
