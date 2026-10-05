@@ -1,5 +1,6 @@
 ExternalProject_Add(libpng
-    DEPENDS zlib
+    DEPENDS
+        zlib
     GIT_REPOSITORY https://github.com/glennrp/libpng.git
     SOURCE_DIR ${SOURCE_LOCATION}
     GIT_CLONE_FLAGS "--sparse --filter=tree:0"
