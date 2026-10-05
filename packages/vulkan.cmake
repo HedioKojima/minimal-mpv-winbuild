@@ -3,7 +3,6 @@ ExternalProject_Add(vulkan
     GIT_REPOSITORY https://github.com/KhronosGroup/Vulkan-Loader.git
     SOURCE_DIR ${SOURCE_LOCATION}
     GIT_TAG main
-    GIT_REMOTE_NAME origin
     GIT_CLONE_FLAGS "--sparse --filter=tree:0"
     GIT_CLONE_POST_COMMAND "sparse-checkout set --no-cone /* !/docs !/tests"
     UPDATE_COMMAND ""

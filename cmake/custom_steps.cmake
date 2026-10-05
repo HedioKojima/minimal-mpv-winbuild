@@ -2,17 +2,8 @@ function(cleanup _name _last_step)
     get_property(_build_in_source TARGET ${_name} PROPERTY _EP_BUILD_IN_SOURCE)
     get_property(_git_repository TARGET ${_name} PROPERTY _EP_GIT_REPOSITORY)
     get_property(_url TARGET ${_name} PROPERTY _EP_URL)
-    get_property(git_tag TARGET ${_name} PROPERTY _EP_GIT_TAG)
-    get_property(git_remote_name TARGET ${_name} PROPERTY _EP_GIT_REMOTE_NAME)
     get_property(stamp_dir TARGET ${_name} PROPERTY _EP_STAMP_DIR)
     get_property(source_dir TARGET ${_name} PROPERTY _EP_SOURCE_DIR)
-
-    if("${git_remote_name}" STREQUAL "" AND NOT "${git_tag}" STREQUAL "")
-        # GIT_REMOTE_NAME is not set when commit hash is specified
-        set(git_tag "")
-    else()
-        set(git_tag "@{u}")
-    endif()
 
     if(_git_repository)
         if(_build_in_source)
@@ -77,26 +68,22 @@ function(cleanup _name _last_step)
 endfunction()
 
 function(force_rebuild_git _name)
-    get_property(git_tag TARGET ${_name} PROPERTY _EP_GIT_TAG)
     get_property(git_reset TARGET ${_name} PROPERTY _EP_GIT_RESET)
-    get_property(git_remote_name TARGET ${_name} PROPERTY _EP_GIT_REMOTE_NAME)
     get_property(stamp_dir TARGET ${_name} PROPERTY _EP_STAMP_DIR)
     get_property(source_dir TARGET ${_name} PROPERTY _EP_SOURCE_DIR)
 
-    if("${git_remote_name}" STREQUAL "" AND NOT "${git_tag}" STREQUAL "")
-        # GIT_REMOTE_NAME is not set when commit hash is specified
-        set(reset "")
-    elseif(NOT "${git_reset}" STREQUAL "")
+    if(NOT "${git_reset}" STREQUAL "")
         set(reset "${git_reset}")
     else()
-        set(reset "@{u}") # eg: origin/master
+        set(reset "\${upstream}")
     endif()
 
 file(WRITE ${stamp_dir}/reset_head.sh
 "#!/bin/bash
 set -e
 [[ -e \"${source_dir}/.git\" ]] || exit 0
-if [[ ! -f \"${stamp_dir}/${_name}-patch\"  || \"${stamp_dir}/${_name}-download\" -nt \"${stamp_dir}/${_name}-patch\" || ! -f \"${stamp_dir}/HEAD\" || \"$(cat ${stamp_dir}/HEAD)\" != \"$(git -C ${source_dir} rev-parse @{u})\" ]]; then
+upstream=$(git -C ${source_dir} rev-parse -q --verify @{u}) || upstream=$(git -C ${source_dir} rev-parse HEAD)
+if [[ ! -f \"${stamp_dir}/${_name}-patch\"  || \"${stamp_dir}/${_name}-download\" -nt \"${stamp_dir}/${_name}-patch\" || ! -f \"${stamp_dir}/HEAD\" || \"$(cat ${stamp_dir}/HEAD)\" != \"\${upstream}\" ]]; then
     git -C ${source_dir} reset --hard ${reset} -q
     if [[ -z \"${git_reset}\" ]]; then
         find \"${stamp_dir}\" -type f  ! -iname '*.cmake' -size 0c -delete

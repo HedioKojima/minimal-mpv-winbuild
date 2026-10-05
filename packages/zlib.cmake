@@ -2,7 +2,6 @@ ExternalProject_Add(zlib
     GIT_REPOSITORY https://github.com/zlib-ng/zlib-ng.git
     SOURCE_DIR ${SOURCE_LOCATION}
     GIT_TAG develop
-    GIT_REMOTE_NAME origin
     GIT_CLONE_FLAGS "--sparse --filter=tree:0"
     GIT_CLONE_POST_COMMAND "sparse-checkout set --no-cone /* !/doc !/test"
     UPDATE_COMMAND ""
