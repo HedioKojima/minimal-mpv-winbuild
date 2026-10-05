@@ -19,7 +19,7 @@ set(RUST_TARGET "${TARGET_CPU}-pc-windows-gnullvm")
 
 execute_process(COMMAND meson --version OUTPUT_VARIABLE MESON_VERSION)
 if(NOT MESON_VERSION VERSION_GREATER_EQUAL "1.11.0")
-    message(FATAL_ERROR "Meson 1.11.0 or greater is required. Install it with pip instead.")
+    message(FATAL_ERROR "Meson 1.11.0 or greater is required. Install it with pipx instead.")
 endif()
 
 set(TARGET_CPU_FAMILY "x86_64")

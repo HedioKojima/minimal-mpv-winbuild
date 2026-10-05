@@ -36,16 +36,16 @@ GCC toolchain support is also removed; only Clang/LLD is supported.
 ### Ubuntu Linux 24.04+ / WSL2
 
 ```bash
-apt install automake autopoint build-essential ccache clang cmake curl gettext git glslang-tools libc++-dev libc++1 libc++abi-dev libc++abi1 libgmp-dev libmimalloc-dev libmpc-dev libmpfr-dev libtool libtool-bin lld llvm nasm ninja-build p7zip-full pkgconf python3-jsonschema python3-mako python3-pip unzip
+apt install automake autopoint build-essential ccache clang cmake curl gettext git glslang-tools libc++-dev libc++1 libc++abi-dev libc++abi1 libgmp-dev libmimalloc-dev libmpc-dev libmpfr-dev libtool libtool-bin lld llvm nasm ninja-build p7zip-full pipx pkgconf python3-jsonschema python3-mako unzip
 ```
 
 Use CMake's Ninja generator (`-G Ninja`). It is much faster than GNU Make and far less error-prone here, because CMake's ExternalProject module tends to generate makefiles that confuse GNU Make's jobserver.
 
 ```bash
-pip3 install --break-system-packages meson
+pipx install meson
 ```
 
-pip installs `meson` into `~/.local/bin`, so make sure that directory is on your `PATH`.
+pipx installs `meson` into `~/.local/bin`, so make sure that directory is on your `PATH`.
 
 ```bash
 export PATH="$HOME/.local/bin:$PATH"
