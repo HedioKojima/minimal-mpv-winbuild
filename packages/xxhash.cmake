@@ -1,11 +1,11 @@
 ExternalProject_Add(xxhash
     GIT_REPOSITORY https://github.com/Cyan4973/xxHash.git
     SOURCE_DIR ${SOURCE_LOCATION}
+    GIT_TAG dev
+    GIT_REMOTE_NAME origin
     GIT_CLONE_FLAGS "--sparse --filter=tree:0"
     GIT_CLONE_POST_COMMAND "sparse-checkout set --no-cone /* !/cli !/doc !/fuzz !/tests"
-    GIT_TAG dev
     UPDATE_COMMAND ""
-    GIT_REMOTE_NAME origin
     CONFIGURE_COMMAND ${EXEC} CONF=1 ${CMAKE_COMMAND} -H<SOURCE_DIR>/build/cmake -B<BINARY_DIR>
         -G Ninja
         -DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}

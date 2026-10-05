@@ -9,7 +9,6 @@ ExternalProject_Add(openssl
     GIT_CLONE_POST_COMMAND "sparse-checkout set --no-cone /* !/VMS !/demos !/dev !/os-dep !/test"
     GIT_SUBMODULES ""
     UPDATE_COMMAND ""
-    BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND ${EXEC} CONF=1 <SOURCE_DIR>/Configure
         --cross-compile-prefix=${TARGET_ARCH}-
         --prefix=${MINGW_INSTALL_PREFIX}
@@ -80,6 +79,7 @@ ExternalProject_Add(openssl
         no-x942kdf
         no-x963kdf
     BUILD_COMMAND ${MAKE} build_sw
+    BUILD_IN_SOURCE 1
     INSTALL_COMMAND ${MAKE} install_sw
     LOG_DOWNLOAD 1 LOG_UPDATE 1 LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1
 )

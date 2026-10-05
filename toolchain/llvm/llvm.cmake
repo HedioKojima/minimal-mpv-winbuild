@@ -64,11 +64,11 @@ list(JOIN llvm_linker_flags " " llvm_linker_flags)
 ExternalProject_Add(llvm
     GIT_REPOSITORY https://github.com/llvm/llvm-project.git
     SOURCE_DIR ${SOURCE_LOCATION}
+    GIT_TAG release/23.x
+    GIT_REMOTE_NAME origin
     GIT_CLONE_FLAGS "--sparse --filter=tree:0"
     GIT_CLONE_POST_COMMAND "sparse-checkout set --no-cone /* !*/test ${llvm_sparse_excludes}"
     UPDATE_COMMAND ""
-    GIT_REMOTE_NAME origin
-    GIT_TAG release/23.x
     LIST_SEPARATOR ,
     CONFIGURE_COMMAND ${EXEC} CONF=1 PATH=$O_PATH ${CMAKE_COMMAND} -H<SOURCE_DIR>/llvm -B<BINARY_DIR>
         -G Ninja

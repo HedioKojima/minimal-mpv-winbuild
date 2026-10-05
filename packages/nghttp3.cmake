@@ -1,10 +1,10 @@
 ExternalProject_Add(nghttp3
     GIT_REPOSITORY https://github.com/ngtcp2/nghttp3.git
     SOURCE_DIR ${SOURCE_LOCATION}
+    GIT_TAG main
     GIT_CLONE_FLAGS "--sparse --filter=tree:0"
     GIT_CLONE_POST_COMMAND "sparse-checkout set --no-cone /* !/tests"
     GIT_SUBMODULES lib/sfparse
-    GIT_TAG main
     UPDATE_COMMAND ""
     CONFIGURE_COMMAND ${EXEC} CONF=1 ${CMAKE_COMMAND} -H<SOURCE_DIR> -B<BINARY_DIR>
         -G Ninja

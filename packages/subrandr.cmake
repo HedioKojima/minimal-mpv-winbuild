@@ -5,7 +5,6 @@ ExternalProject_Add(subrandr
     GIT_REPOSITORY https://github.com/afishhh/subrandr.git
     SOURCE_DIR ${SOURCE_LOCATION}
     GIT_CLONE_FLAGS "--filter=tree:0"
-    BUILD_IN_SOURCE 1
     UPDATE_COMMAND ""
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ${EXEC}
@@ -17,6 +16,7 @@ ExternalProject_Add(subrandr
         --target ${RUST_TARGET}
         --shared-library false
         --static-library true
+    BUILD_IN_SOURCE 1
     INSTALL_COMMAND ""
     LOG_DOWNLOAD 1 LOG_UPDATE 1 LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1
 )
