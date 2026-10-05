@@ -22,7 +22,6 @@ ExternalProject_Add(llvm-wrapper
     COMMAND ${CMAKE_COMMAND} -E create_symlink ${PKGCONFIG} ${CMAKE_INSTALL_PREFIX}/bin/${TARGET_ARCH}-pkg-config
     COMMAND ${CMAKE_COMMAND} -E create_symlink ${PKGCONFIG} ${CMAKE_INSTALL_PREFIX}/bin/${TARGET_ARCH}-pkgconf
     INSTALL_COMMAND ""
-    COMMENT "Setting up target directories and symlinks"
 )
 
 foreach(compiler clang++ g++ c++ clang gcc as)

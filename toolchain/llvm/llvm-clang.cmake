@@ -9,5 +9,4 @@ ExternalProject_Add(llvm-clang
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
     INSTALL_COMMAND ""
-    COMMENT "Dummy target to setup target toolchain"
 )
