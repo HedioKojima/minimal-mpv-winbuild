@@ -19,11 +19,11 @@ ExternalProject_Add(openssl
         enable-ec_nistp_64_gcc_128
         enable-zlib
         enable-zstd
-        no-autoload-config
         no-apps
         no-aria
         no-ascon128
         no-async
+        no-autoload-config
         no-bf
         no-blake2
         no-camellia
