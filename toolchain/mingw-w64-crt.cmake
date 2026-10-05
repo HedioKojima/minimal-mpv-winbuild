@@ -1,8 +1,8 @@
 ExternalProject_Add(mingw-w64-crt
     DEPENDS
+        llvm-wrapper
         mingw-w64
         mingw-w64-headers
-        llvm-wrapper
     DOWNLOAD_COMMAND ""
     SOURCE_DIR ${MINGW_SRC}
     CONFIGURE_COMMAND ${EXEC} CONF=1 <SOURCE_DIR>/mingw-w64-crt/configure

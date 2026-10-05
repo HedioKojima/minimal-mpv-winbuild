@@ -1,7 +1,7 @@
 ExternalProject_Add(llvm-compiler-rt-builtin
     DEPENDS
-        mingw-w64-headers
         mingw-w64-crt
+        mingw-w64-headers
     DOWNLOAD_COMMAND ""
     SOURCE_DIR ${LLVM_SRC}
     LIST_SEPARATOR ,

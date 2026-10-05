@@ -2,9 +2,9 @@
 # mingw's header+crt -> compiler-rt builtins -> libcxx
 ExternalProject_Add(llvm-clang
     DEPENDS
+        cppwinrt
         llvm-libcxx
         winpthreads
-        cppwinrt
     DOWNLOAD_COMMAND ""
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
